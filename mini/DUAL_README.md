@@ -1,10 +1,14 @@
-# MiSTer × two Stream Decks · Dual v1.0.2
+# MiSTer × two Stream Decks · Dual v1.0.3
 
 Run a six-key Stream Deck Mini and a 15-key Stream Deck MK.2 together on one MiSTer. Both stay active, with independent pages, artwork and brightness. Update All is on the Mini's first page, physical key 4, and on the MK.2's first page, physical key 14.
 
-**[Download the combined ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/dual-v1.0.2/MiSTer_StreamDeck_Dual_v1_0_2.zip)** · [Mini guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/mini.html) · [15-key guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/)
+**[Download the combined ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/dual-v1.0.3/MiSTer_StreamDeck_Dual_v1_0_3.zip)** · [Mini guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/mini.html) · [15-key guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/)
 
-## v1.0.2 input fix
+## v1.0.3 · Mini Y / N page
+
+Mini v1.0.5 adds a sixth page with animated Y/N keyboard keys, Back to Home and Next. Held keys release on page changes. The MK.2 layout is unchanged. Y/N target the active MiSTer screen, not background Update All stdin.
+
+## Previous v1.0.2 input fix
 
 Mini v1.0.4 fixes a reproducible input-blocking loop during slow animated page changes and reads the seven-byte Mini button prefix. Both runtimes finish the initial page paint before resuming animations. Mini diagnostics include input counters, input-blocking state, and a bounded sample of presses and malformed reports.
 
@@ -19,7 +23,7 @@ Mini v1.0.4 fixes a reproducible input-blocking loop during slow animated page c
 ## Install both
 
 1. Wait for any Update All job to finish. Run the installed **StreamDeck_Disable.sh** before replacing files. If a separate Mini service is installed, disable that too. Back up custom configurations.
-2. Extract **MiSTer_StreamDeck_Dual_v1_0_2.zip**. Copy its **Scripts contents**, including hidden **.config**, into `/media/fat/Scripts/`. Replace each binary, configuration and artwork set together.
+2. Extract **MiSTer_StreamDeck_Dual_v1_0_3.zip**. Copy its **Scripts contents**, including hidden **.config**, into `/media/fat/Scripts/`. Replace each binary, configuration and artwork set together.
 3. Plug both decks into MiSTer's USB host hub.
 4. Run **StreamDeck_Both_Enable.sh** from the Scripts menu. Both services start now and at boot.
 

@@ -2,8 +2,8 @@
 from pathlib import Path
 import argparse
 
-MINI_VERSION = '1.0.4'
-DUAL_VERSION = '1.0.2'
+MINI_VERSION = '1.0.5'
+DUAL_VERSION = '1.0.3'
 REPOSITORY = 'https://github.com/pxpxpxp/MiSTer_StreamDeck'
 
 def bundle(device, version):

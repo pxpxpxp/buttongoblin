@@ -1,12 +1,13 @@
-Mini v1.0.4 — ignored button press fix
+Mini v1.0.5 — animated Y / N page
 
-- Fix a reproduced input-blocking loop on slow animated page changes. Initial page images finish before animation frames resume.
-- Read the Mini report ID and six key-state bytes, matching the upstream driver's seven-byte read and avoiding assumptions about padding length.
-- Track held keys during startup so they remain suppressed until released after the fade.
-- Add input report/press counters and startup/page-transition state to diagnostics. Log only the first 12 presses and first five malformed input reports.
+- Add page 6: Y / N / blank, Back to Home / blank / Next.
+- Y and N send native keyboard press/release events, animate, and turn green while held.
+- Release held keys on page changes; Next wraps through all six pages.
+- Keep Update All on Home/key 4 and preserve the v1.0.4 button fixes.
+- Update the Mini guide, page validation and input regression tests.
 
-The [Dual v1.0.2 bundle](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/tag/dual-v1.0.2) includes Mini v1.0.4 and the same page-paint protection for MK.2.
+The Dual v1.0.3 bundle includes Mini v1.0.5. The MK.2 layout is unchanged.
 
-Disable the service and back up custom settings before replacing all Scripts contents, including hidden .config. Enable the Mini with StreamDeck_Mini_Enable.sh, or both decks with StreamDeck_Both_Enable.sh. Update All remains on Mini Home/key 4.
+Y/N keys type into the active MiSTer screen; they do not feed the background Update All process, which runs with non-interactive input. This release does not diagnose or fix the separately reported Update All failure.
 
-Host regression and sanitizer tests cover padded input packets, slow uploads, post-transition presses, held keys and startup tracking. Button response on a physical Mini connected to MiSTer was user-confirmed working with v1.0.4 on 2026-10-17.
+Disable the service and back up custom settings before replacing all Scripts contents, including hidden .config. Copy the new buttons-confirm.conf together with the new binary and artwork, then enable the service. New page hardware behavior needs confirmation; the previous v1.0.4 button response was user-confirmed on 2026-10-17.

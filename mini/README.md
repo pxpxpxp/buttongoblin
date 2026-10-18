@@ -1,10 +1,14 @@
-# MiSTer × Stream Deck Mini · v1.0.4
+# MiSTer × Stream Deck Mini · v1.0.5
 
-[Download Mini ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/mini-v1.0.4/MiSTer_StreamDeck_Mini_v1_0_4.zip) · [Animated Mini guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/mini.html) · [15-key MK.2 build](../README.md)
+[Download Mini ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/mini-v1.0.5/MiSTer_StreamDeck_Mini_v1_0_5.zip) · [Animated Mini guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/mini.html) · [15-key MK.2 build](../README.md)
 
 A six-key port of the existing native MiSTer launcher. **Update All is on the first page, physical key 4.** The Mini uses its own USB protocol and prepared 80×80 BMP animations. No image decoding happens on MiSTer.
 
-## Mini v1.0.4 input fix
+## Mini v1.0.5 · Y / N page
+
+Page 6 adds animated Y and N keys, Back to Home, and Next. Letters turn green while held and release safely when leaving the page. Copy the new `buttons-confirm.conf` together with the updated binary and artwork. These keys target the active MiSTer screen; the background Update All process has separate non-interactive input.
+
+## Previous v1.0.4 input fix
 
 Initial page images now finish before animations resume, preventing slow USB uploads from keeping button input blocked. Mini input reads use the report ID and six key-state bytes, following the upstream Mini driver; report padding is ignored. Keys held during startup or a transition remain suppressed until released.
 
@@ -12,9 +16,9 @@ Diagnostics now include `input_reports`, `key_presses`, `startup_stage` and `pag
 
 ## Run both decks together
 
-Use the **[Dual v1.0.2 bundle and setup instructions](DUAL_README.md)** to install the Mini and 15-key MK.2 together. Run `StreamDeck_Both_Enable.sh` after copying the complete bundle.
+Use the **[Dual v1.0.3 bundle and setup instructions](DUAL_README.md)** to install the Mini and 15-key MK.2 together. Run `StreamDeck_Both_Enable.sh` after copying the complete bundle.
 
-Mini v1.0.4 uses `streamdeck-mini`, `StreamDeck_Mini_Enable.sh` and `/tmp/mister_streamdeck_mini.*`. If upgrading from Mini v1.0.0/v1.0.1, first run the old `StreamDeck_Disable.sh` and back up Mini settings; those versions occupied the MK.2 directory.
+Mini v1.0.5 uses `streamdeck-mini`, `StreamDeck_Mini_Enable.sh` and `/tmp/mister_streamdeck_mini.*`. If upgrading from Mini v1.0.0/v1.0.1, first run the old `StreamDeck_Disable.sh` and back up Mini settings; those versions occupied the MK.2 directory.
 
 ## Home · Page 1
 
@@ -24,7 +28,7 @@ Mini v1.0.4 uses `streamdeck-mini`, `StreamDeck_Mini_Enable.sh` and `/tmp/mister
 
 - Tap Update All to run `/media/fat/Scripts/update_all.sh`. Its running, failed, and finished feedback stays associated with Home even while you browse other pages.
 - Tap Brightness for the existing five ascending levels. Hold it for one second to jump to Navigation without changing brightness.
-- Press and release Next to cycle through the five pages. Release a held button before using it on the new page.
+- Press and release Next to cycle through the six pages. Release a held button before using it on the new page.
 
 ## Remaining pages
 
@@ -34,12 +38,13 @@ Mini v1.0.4 uses `streamdeck-mini`, `StreamDeck_Mini_Enable.sh` and `/tmp/mister
 | 3 · Consoles | Game Boy Advance / Game Boy / Master System | Neo Geo / The Simpsons / Next |
 | 4 · Navigation | Up / Left / Down | Right / Enter / Next |
 | 5 · Shortcuts | Menu / Escape / Space | Back to Home / Brightness / Next |
+| 6 · Y / N | Y / N / — | Back to Home / — / Next |
 
 The navigation shortcuts have matching green artwork while held. Back retains the fifth-cycle Stay Puft morph and returns Home on release. Next also shows green while pressed. The original startup mosaic is recomposed for the Mini’s 3×2 layout and fades in and out.
 
 ## Install or upgrade
 
-1. Download and extract **MiSTer_StreamDeck_Mini_v1_0_4.zip**.
+1. Download and extract **MiSTer_StreamDeck_Mini_v1_0_5.zip**.
 2. Back up custom configurations and wait for any Update All job to finish. For Mini v1.0.0/v1.0.1, run the old **StreamDeck_Disable.sh** before migrating. For later Mini versions, use **StreamDeck_Mini_Disable.sh**. The separate MK.2 service can remain installed.
 3. Copy the package’s **Scripts contents** into `/media/fat/Scripts/`, including the hidden **.config** folder. Replace the binary, configurations, and artwork together.
 4. Connect the Mini to MiSTer’s USB host hub using its cable; use a data-capable adapter if its connector requires one.
@@ -51,7 +56,7 @@ The runtime remains under `/media/fat/Scripts/.config/streamdeck-mini/`. The Min
 
 ## Configuration and diagnostics
 
-The five files are `buttons.conf`, `buttons-page2.conf`, `buttons-page3.conf`, `buttons-navigation.conf`, and `buttons-shortcuts.conf`. Within each page, `key.0` is physical button 1 and `key.5` is button 6. The additional actions are `next` (cycle pages) and `back` (Home).
+The six files are `buttons.conf`, `buttons-page2.conf`, `buttons-page3.conf`, `buttons-navigation.conf`, `buttons-shortcuts.conf`, and `buttons-confirm.conf`. Within each page, `key.0` is physical button 1 and `key.5` is button 6. The letter actions are `y` and `n`; they send keyboard presses/releases to the active MiSTer screen and do not supply stdin to background Update All. The additional actions are `next` (cycle pages) and `back` (Home).
 
 **Do not export Mini configurations from the 15-key web editor.** It produces MK.2 layouts and JPEG animations. Edit the Mini configuration files directly for this release; keep a Next or Back action available.
 
@@ -59,11 +64,11 @@ Prepared `.sma` files contain Mini BMP frames. They are not compatible with MK.2
 
 Run `extras/StreamDeck_Mini_Diagnostics.sh` over SSH for connection, worker, and updater logs. A missing updater or bad game path is reported through the existing failure feedback. The service retains supervised restart, USB reconnection, held-key rearming, queue clearing on page changes, and bounded image caches.
 
-All five page configurations must load successfully. A failed reload keeps the complete previous configuration set. Update All runs once at a time; Home shows its completion when you return.
+All six page configurations must load successfully. A failed reload keeps the complete previous configuration set. Update All runs once at a time; Home shows its completion when you return.
 
 ## Build and verification
 
-GitHub Actions restores the existing v1 build inputs, generates the current character/control artwork, converts it to Mini format, runs the Mini tests, cross-compiles a static Cortex-A9 ARM binary with Zig 0.13.0, and publishes the ZIP and SHA-256 checksum under the **mini-v1.0.4** release.
+GitHub Actions restores the existing v1 build inputs, generates the current character/control artwork, converts it to Mini format, runs the Mini tests, cross-compiles a static Cortex-A9 ARM binary with Zig 0.13.0, and publishes the ZIP and SHA-256 checksum under the **mini-v1.0.5** release.
 
 The standalone native source is [streamdeck-mini.c](streamdeck-mini.c). `prepare_mini.py` prepares the package; `test_mini.c` and `test_package.py` check the protocol, paging, feedback, cache validation, and first-page updater mapping. The packaged source can be rebuilt with `sh source/build.sh` after installing Zig on a computer.
 
@@ -84,7 +89,7 @@ Only the visible page animates. Each image uses 20 reports of 1,024 bytes, sent 
 - Prevent idle CPU spinning with custom hold actions or a page transition.
 - Suppress simultaneous held keys across page changes and clear stale green shortcut feedback.
 - Keep script feedback on its owning page, including custom mappings; retain updater results across USB reconnection.
-- Validate all five pages when using a relative `buttons.conf` path.
+- Validate all six pages when using a relative `buttons.conf` path.
 - Retry virtual keyboard creation after a failed connection.
 - Rebuild the Mini when shared artwork preparation inputs change.
 

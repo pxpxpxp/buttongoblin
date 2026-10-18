@@ -22,9 +22,9 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
-#define VERSION "Mini 1.0.4"
+#define VERSION "Mini 1.0.5"
 #define KEYS 6
-#define PAGES 5
+#define PAGES 6
 #define NAV_PAGE 3
 #define BRIGHTNESS_KEY 4
 #define PATHCAP 2048
@@ -43,7 +43,7 @@ struct rawinfo {
 };
 #define RAWINFO _IOR('H', 3, struct rawinfo)
 #define FEATURE(n) _IOC(_IOC_WRITE | _IOC_READ, 'H', 6, n)
-enum { NONE, LAUNCH, DIM, BRIGHT, RELOAD, RESTART, SCRIPT, CYCLE, UPDATE_ALL, SPACE_BUTTON, MENU_BUTTON, ENTER_BUTTON, UP_BUTTON, DOWN_BUTTON, LEFT_BUTTON, RIGHT_BUTTON, ESC_BUTTON, BACK_PAGE, NEXT_PAGE };
+enum { NONE, LAUNCH, DIM, BRIGHT, RELOAD, RESTART, SCRIPT, CYCLE, UPDATE_ALL, SPACE_BUTTON, MENU_BUTTON, ENTER_BUTTON, UP_BUTTON, DOWN_BUTTON, LEFT_BUTTON, RIGHT_BUTTON, ESC_BUTTON, Y_BUTTON, N_BUTTON, BACK_PAGE, NEXT_PAGE };
 enum { PRESS, RELEASE, HOLD };
 struct frame {
   const uint8_t *data;
@@ -434,8 +434,8 @@ static int parseconfig(struct config *c, const char *path) {
       else if (!strcmp(field, "action")) {
         const char *names[] = {"none",   "launch", "dim",
                                "bright", "reload", "restart",
-                               "script", "cycle",  "update_all", "space", "menu", "enter", "up", "down", "left", "right", "escape", "back", "next"};
-        result = enumset(value, names, 19, &key->action);
+                               "script", "cycle",  "update_all", "space", "menu", "enter", "up", "down", "left", "right", "escape", "y", "n", "back", "next"};
+        result = enumset(value, names, 21, &key->action);
         explicit_action[k] = 1;
       } else if (!strcmp(field, "trigger")) {
         const char *names[] = {"press", "release", "hold"};
@@ -661,8 +661,8 @@ static int splash_active(void) {
 /* One persistent virtual keyboard: no subprocess, no per-press allocation.
  * Closing/destroying it releases held keys on worker crash. */
 static int keyboard_fd=-1;
-static uint8_t control_down[8];
-static int control_codes[8][3]={{KEY_SPACE,0,0},{KEY_F12,0,0},{KEY_ENTER,0,0},{KEY_UP,0,0},{KEY_DOWN,0,0},{KEY_LEFT,0,0},{KEY_RIGHT,0,0},{KEY_ESC,0,0}};
+static uint8_t control_down[10];
+static int control_codes[10][3]={{KEY_SPACE,0,0},{KEY_F12,0,0},{KEY_ENTER,0,0},{KEY_UP,0,0},{KEY_DOWN,0,0},{KEY_LEFT,0,0},{KEY_RIGHT,0,0},{KEY_ESC,0,0},{KEY_Y,0,0},{KEY_N,0,0}};
 static void keyboard_close(void) {
   if(keyboard_fd>=0){ioctl(keyboard_fd,UI_DEV_DESTROY);close(keyboard_fd);keyboard_fd=-1;}
   memset(control_down,0,sizeof control_down);
@@ -674,13 +674,13 @@ static int keyboard_open(void) {
   struct uinput_user_dev dev;memset(&dev,0,sizeof dev);
   strcpy(dev.name,"MiSTer StreamDeck Mini Keyboard");dev.id.bustype=BUS_USB;dev.id.vendor=0x1209;dev.id.product=0x5345;dev.id.version=1;
   if(ioctl(fd,UI_SET_EVBIT,EV_KEY)<0||ioctl(fd,UI_SET_EVBIT,EV_SYN)<0)goto fail;
-  for(int i=0;i<8;i++)for(int j=0;j<3&&control_codes[i][j];j++)if(ioctl(fd,UI_SET_KEYBIT,control_codes[i][j])<0)goto fail;
+  for(int i=0;i<10;i++)for(int j=0;j<3&&control_codes[i][j];j++)if(ioctl(fd,UI_SET_KEYBIT,control_codes[i][j])<0)goto fail;
   if(write(fd,&dev,sizeof dev)!=(ssize_t)sizeof dev||ioctl(fd,UI_DEV_CREATE)<0)goto fail;
   keyboard_fd=fd;return 0;
 fail:close(fd);return -1;
 }
 static int control_change(int action,int down) {
-  int index=action-SPACE_BUTTON;if(index<0||index>=8)return -1;
+  int index=action-SPACE_BUTTON;if(index<0||index>=10)return -1;
   if(control_down[index]==down)return 0;
   if(keyboard_fd<0&&(!down||keyboard_open()<0))return -1;
   struct input_event events[4];memset(events,0,sizeof events);int count=0;
@@ -693,8 +693,8 @@ static int control_change(int action,int down) {
   if(sent!=(ssize_t)bytes){keyboard_close();return -1;}
   control_down[index]=(uint8_t)down;return 0;
 }
-static void controls_release(void){for(int a=SPACE_BUTTON;a<=ESC_BUTTON;a++)if(control_change(a,0)<0)break;}
-static void controls_prepare(void){for(int k=0;k<KEYS;k++)if(cfg->keys[k].action>=SPACE_BUTTON&&cfg->keys[k].action<=ESC_BUTTON){if(keyboard_open()<0)logmsg("Mapping keyboard unavailable: %s",strerror(errno));break;}}
+static void controls_release(void){for(int a=SPACE_BUTTON;a<=N_BUTTON;a++)if(control_change(a,0)<0)break;}
+static void controls_prepare(void){for(int k=0;k<KEYS;k++)if(cfg->keys[k].action>=SPACE_BUTTON&&cfg->keys[k].action<=N_BUTTON){if(keyboard_open()<0)logmsg("Mapping keyboard unavailable: %s",strerror(errno));break;}}
 
 static void reset_usb_state(void) {
   controls_release();
@@ -1016,7 +1016,7 @@ static void handle_input(const uint8_t states[KEYS], double now,
       inputs.down[k]=states[k];
       continue;
     }
-    if (action>=SPACE_BUTTON && action<=ESC_BUTTON) {
+    if (action>=SPACE_BUTTON && action<=N_BUTTON) {
       if (pressed || released) {
         int rc=control_change(action,states[k]);
         visual(k,rc?2:(states[k]?1:0),now);
@@ -1368,7 +1368,7 @@ static void reap_script(double now, int stopping) {
   script_action = NONE;
   script_target[0] = 0;
 }
-static const char *page_files[PAGES]={"buttons.conf","buttons-page2.conf","buttons-page3.conf","buttons-navigation.conf","buttons-shortcuts.conf"};
+static const char *page_files[PAGES]={"buttons.conf","buttons-page2.conf","buttons-page3.conf","buttons-navigation.conf","buttons-shortcuts.conf","buttons-confirm.conf"};
 static struct config *load_page(int page) {
   char path[PATHCAP];if(page<1||page>=PAGES||textset(path,sizeof path,configpath))return NULL;
   char *slash=strrchr(path,'/');if(slash)slash[1]=0;else path[0]=0;

@@ -174,7 +174,39 @@ static void page_tests(void){
   inputs.held[4]=1;assert(worker_wait_ms(10,1,20,20,20,20,0)==1000);
   assert(next_brightness(CYCLE,25)==50&&next_brightness(CYCLE,100)==10);
   for(int p=0;p<PAGES;p++){freeconfig(page_configs[p]);page_configs[p]=NULL;}cfg=NULL;
-  puts("PASS: five-page wrap, simultaneous holds, feedback reset, script ownership/reconnect and idle scheduling");
+  puts("PASS: six-page wrap, simultaneous holds, feedback reset, script ownership/reconnect and idle scheduling");
+}
+
+static void confirmation_tests(void){
+  for(int p=0;p<PAGES;p++){page_configs[p]=newconfig();assert(page_configs[p]);}
+  active_page=5;cfg=page_configs[5];
+  cfg->keys[0].action=Y_BUTTON;cfg->keys[1].action=N_BUTTON;
+  reset_usb_state();arm_inputs();
+  int pipes[2];assert(!pipe(pipes));keyboard_fd=pipes[1];
+  struct input_event events[4];uint8_t states[KEYS]={1,0,0,0,0,0};
+  handle_input(states,1,device_capture);
+  assert(read(pipes[0],events,2*sizeof *events)==2*sizeof *events);
+  assert(events[0].type==EV_KEY&&events[0].code==KEY_Y&&events[0].value==1);
+  assert(events[1].type==EV_SYN&&uploads[0].wanted==1&&restore[0]==0);
+  handle_input(states,2,device_capture);
+  struct pollfd pending={pipes[0],POLLIN,0};assert(poll(&pending,1,0)==0);
+  states[0]=0;handle_input(states,3,device_capture);
+  assert(read(pipes[0],events,2*sizeof *events)==2*sizeof *events);
+  assert(events[0].code==KEY_Y&&events[0].value==0&&uploads[0].wanted==0);
+  states[0]=states[1]=1;handle_input(states,4,device_capture);
+  assert(read(pipes[0],events,sizeof events)==sizeof events);
+  assert(events[0].code==KEY_Y&&events[0].value==1);
+  assert(events[2].code==KEY_N&&events[2].value==1&&uploads[1].wanted==1);
+  switch_page(0);
+  assert(read(pipes[0],events,sizeof events)==sizeof events);
+  assert(events[0].code==KEY_Y&&events[0].value==0);
+  assert(events[2].code==KEY_N&&events[2].value==0);
+  assert(!inputs.armed[0]&&!inputs.armed[1]);
+  assert(!page_uploads[5][0].wanted&&!page_uploads[5][1].wanted);
+  keyboard_close();close(pipes[0]);
+  for(int p=0;p<PAGES;p++){freeconfig(page_configs[p]);page_configs[p]=NULL;}
+  cfg=NULL;active_page=page_transition=0;
+  puts("PASS: Y/N key events, held feedback, duplicate suppression and release on page change");
 }
 
 static void package_tests(const char *root){
@@ -184,6 +216,8 @@ static void package_tests(const char *root){
   assert(strlen(assets)+6<sizeof assets);strcat(assets,"/icons");
   struct config *pages[PAGES]={readconfig(1)};assert(pages[0]);assert(!load_pages(pages));
   assert(pages[0]->keys[3].action==UPDATE_ALL&&!strcmp(pages[0]->keys[3].target,"Scripts/update_all.sh"));
+  assert(pages[5]->keys[0].action==Y_BUTTON&&pages[5]->keys[1].action==N_BUTTON);
+  assert(pages[5]->keys[3].action==BACK_PAGE);
   for(int p=0;p<PAGES;p++){
     assert(pages[p]->keys[5].action==NEXT_PAGE);
     for(int k=0;k<KEYS;k++)for(int state=0;state<3;state++){
@@ -237,4 +271,4 @@ static void script_tests(void){
   puts("PASS: real script guardian, closed output, success/failure, timeout and reconnect feedback");
 }
 
-int main(int argc,char **argv){protocol_tests();input_reader_tests();transition_tests();page_tests();script_tests();if(argc>1)package_tests(argv[1]);return 0;}
+int main(int argc,char **argv){protocol_tests();input_reader_tests();transition_tests();page_tests();confirmation_tests();script_tests();if(argc>1)package_tests(argv[1]);return 0;}

@@ -22,7 +22,7 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
-#define VERSION "1.0.0 Dual 1.0.2"
+#define VERSION "1.0.0 Dual 1.0.3"
 #define KEYS 15
 #define PAGES 2
 #define NAV_PAGE 1

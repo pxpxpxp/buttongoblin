@@ -13,9 +13,9 @@ Turn an **Elgato Stream Deck MK.2** or **six-key Stream Deck Mini** into a dedic
 
 | Your setup | Download | Run after copying |
 | --- | --- | --- |
-| **Mini + 15-key MK.2 together** | **[Dual v1.0.2 ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/dual-v1.0.2/MiSTer_StreamDeck_Dual_v1_0_2.zip)** | `StreamDeck_Both_Enable.sh` |
-| Six-key Mini | [Mini v1.0.4 ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/mini-v1.0.4/MiSTer_StreamDeck_Mini_v1_0_4.zip) | `StreamDeck_Mini_Enable.sh` |
-| 15-key MK.2 | [Current MK.2 in Dual v1.0.2](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/dual-v1.0.2/MiSTer_StreamDeck_Dual_v1_0_2.zip) | `StreamDeck_Enable.sh` |
+| **Mini + 15-key MK.2 together** | **[Dual v1.0.3 ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/dual-v1.0.3/MiSTer_StreamDeck_Dual_v1_0_3.zip)** | `StreamDeck_Both_Enable.sh` |
+| Six-key Mini | [Mini v1.0.5 ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/mini-v1.0.5/MiSTer_StreamDeck_Mini_v1_0_5.zip) | `StreamDeck_Mini_Enable.sh` |
+| 15-key MK.2 | [Current MK.2 in Dual v1.0.3](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/dual-v1.0.3/MiSTer_StreamDeck_Dual_v1_0_3.zip) | `StreamDeck_Enable.sh` |
 
 The Dual bundle also works with only the MK.2 enabled. The [earlier standalone MK.2 v1 ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/v1/MiSTer_StreamDeck_v1.zip) remains available.
 
@@ -88,7 +88,7 @@ Menu opens MiSTer’s menu; arrows navigate; Enter selects; Escape backs out. Du
 | :---: | :---: | :---: |
 | **4 · Update All** | **5 · Brightness** | **6 · Next** |
 
-**Update All is on the first page, bottom left.** Tap button 5 for brightness, or hold it for one second to jump to Navigation. Button 6 cycles through all five pages on release.
+**Update All is on the first page, bottom left.** Tap button 5 for brightness, or hold it for one second to jump to Navigation. Button 6 cycles through all six pages on release.
 
 | Page | Top row · 1 / 2 / 3 | Bottom row · 4 / 5 / 6 |
 | --- | --- | --- |
@@ -96,6 +96,7 @@ Menu opens MiSTer’s menu; arrows navigate; Enter selects; Escape backs out. Du
 | 3 · Consoles | Game Boy Advance / Game Boy / Master System | Neo Geo / The Simpsons / Next |
 | 4 · Navigation | Up / Left / Down | Right / Enter / Next |
 | 5 · Shortcuts | Menu / Escape / Space | Back to Home / Brightness / Next |
+| 6 · Y / N | Y / N / — | Back to Home / — / Next |
 
 Release held buttons before using a new page. Update All feedback remains associated with Home while you browse other pages.
 
@@ -105,7 +106,7 @@ Release held buttons before using a new page. Update All feedback remains associ
 
 **MK.2:** use the [Deck Editor](https://pxpxpxp.github.io/MiSTer_StreamDeck/editor/) on your computer. Assign actions, paths, and artwork; save an editable project; then export for MiSTer. Disable the MK.2 service before copying the export and enable it afterward. The standalone MK.2 ZIP also includes an offline editor.
 
-**Mini:** edit the five configuration files in `Scripts/.config/streamdeck-mini/`. Keep a Next or Back action available. The current web editor targets the 15-key MK.2; its exports do not fit the Mini.
+**Mini:** edit the six configuration files in `Scripts/.config/streamdeck-mini/`. Keep a Next or Back action available. The current web editor targets the 15-key MK.2; its exports do not fit the Mini.
 
 Configuration indices start at zero: `key.0` means physical button 1. Labels are metadata; visible lettering is part of the artwork.
 
@@ -157,4 +158,4 @@ Each release includes **LICENSE.txt** and **ARTWORK_CREDITS.txt** with the proje
 
 ---
 
-**[Download Dual](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/tag/dual-v1.0.2)** · **[Mini guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/mini.html)** · **[15-key guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/)** · **[MK.2 editor](https://pxpxpxp.github.io/MiSTer_StreamDeck/editor/)**
+**[Download Dual](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/tag/dual-v1.0.3)** · **[Mini guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/mini.html)** · **[15-key guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/)** · **[MK.2 editor](https://pxpxpxp.github.io/MiSTer_StreamDeck/editor/)**
