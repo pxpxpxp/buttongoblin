@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 root = Path(sys.argv[1])
-app = root / "Scripts/.config/streamdeck"
+app = root / "Scripts/.config/buttongoblin"
 order = [3, 0, 1, 0, 9, 0, 5, 6, 7, 4, 8, 0, 0, 0, 14]
 conf = app / "buttons-shortcuts.conf"
 text = conf.read_text()

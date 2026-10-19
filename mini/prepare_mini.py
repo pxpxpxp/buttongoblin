@@ -100,19 +100,19 @@ def letter_frames(letter,green=False):
     return frames
 
 def prepare(base,output,docs=None):
-    source=base/'Scripts/.config/streamdeck'
-    app=output/'Scripts/.config/streamdeck-mini'
+    source=base/'Scripts/.config/buttongoblin'
+    app=output/'Scripts/.config/buttongoblin-mini'
     if app.exists():shutil.rmtree(app)
     # Copy only reusable files, rather than copying and deleting MK.2 artwork,
     # source and configurations. The Mini owns a separate output tree.
-    shutil.copytree(source,app,ignore=shutil.ignore_patterns('icons','source','*.conf','streamdeck-mister'))
+    shutil.copytree(source,app,ignore=shutil.ignore_patterns('icons','source','*.conf','buttongoblin-mister'))
     for operation in ['Enable','Disable']:
-        name=f'StreamDeck_{operation}.sh'
+        name=f'ButtonGoblin_{operation}.sh'
         shutil.copy2(base/'Scripts'/name,output/'Scripts'/name)
     icons=app/'icons'
     icons.mkdir();(icons/'startup').mkdir();(app/'source').mkdir()
-    shutil.copy2(Path(__file__).with_name('streamdeck-mini.c'),app/'source/streamdeck.c')
-    test=Path(__file__).with_name('test_mini.c').read_text().replace('#include "streamdeck-mini.c"','#include "streamdeck.c"')
+    shutil.copy2(Path(__file__).with_name('buttongoblin-mini.c'),app/'source/buttongoblin.c')
+    test=Path(__file__).with_name('test_mini.c').read_text().replace('#include "buttongoblin-mini.c"','#include "buttongoblin.c"')
     (app/'source/test_mini.c').write_text(test)
     shutil.copy2(Path(__file__).with_name('test_package.py'),app/'source/test_package.py')
     for name in ['LICENSE.txt','ARTWORK_CREDITS.txt']:
@@ -175,9 +175,9 @@ def prepare(base,output,docs=None):
     for key in range(6):
         x=(key%3)*80;y=(key//3)*80
         (icons/'startup'/f'{key:02d}.bmp').write_bytes(bitmap(boot.crop((x,y,x+80,y+80))))
-    (app/'source/build.sh').write_text('#!/bin/sh\nset -eu\ncd "$(dirname "$0")/.."\nzig cc -target arm-linux-musleabihf -mcpu=cortex_a9 -static -O2 -s -Wall -Wextra -Werror source/streamdeck.c -o streamdeck-mister\n')
-    diag=app/'extras/StreamDeck_Diagnostics.sh'
-    diag.write_text(diag.read_text().replace('MK.2 v0.2.47',f'Mini v{MINI_VERSION}').replace('"$k" -le 14','"$k" -le 5'))
+    (app/'source/build.sh').write_text('#!/bin/sh\nset -eu\ncd "$(dirname "$0")/.."\nzig cc -target arm-linux-musleabihf -mcpu=cortex_a9 -static -O2 -s -Wall -Wextra -Werror source/buttongoblin.c -o buttongoblin-mister\n')
+    diag=app/'extras/ButtonGoblin_Diagnostics.sh'
+    diag.write_text(diag.read_text().replace(f'MK.2 v{DUAL_VERSION}',f'Mini v{MINI_VERSION}').replace('"$k" -le 14','"$k" -le 5'))
     text=diag.read_text()
     text=text.replace(" echo '\\nHID raw interfaces:'", """ echo '\\nUSB hub topology:'
  if command -v lsusb >/dev/null 2>&1; then lsusb -t 2>/dev/null || true; fi
@@ -196,11 +196,11 @@ def prepare(base,output,docs=None):
     diag.write_text(text)
     # Keep the Mini's installer, boot block and logs separate from the MK.2.
     for path in list((output/'Scripts').rglob('*.sh')):
-        text=path.read_text().replace('/Scripts/.config/streamdeck','/Scripts/.config/streamdeck-mini')
-        text=text.replace('/tmp/mister_streamdeck','/tmp/mister_streamdeck_mini')
-        text=text.replace('STREAMDECK-MK2','STREAMDECK-MINI').replace('StreamDeck_','StreamDeck_Mini_').replace('.streamdeck-backup','.streamdeck-mini-backup')
+        text=path.read_text().replace('/Scripts/.config/buttongoblin','/Scripts/.config/buttongoblin-mini')
+        text=text.replace('/tmp/buttongoblin','/tmp/buttongoblin_mini')
+        text=text.replace('BUTTONGOBLIN-MK2','BUTTONGOBLIN-MINI').replace('ButtonGoblin_','ButtonGoblin_Mini_').replace('.buttongoblin-backup','.buttongoblin-mini-backup')
         path.write_text(text)
-        if path.name.startswith('StreamDeck_'):path.rename(path.with_name(path.name.replace('StreamDeck_','StreamDeck_Mini_',1)))
+        if path.name.startswith('ButtonGoblin_'):path.rename(path.with_name(path.name.replace('ButtonGoblin_','ButtonGoblin_Mini_',1)))
     for path in (output/'Scripts').rglob('*.sh'):path.chmod(0o755)
     info={'device':'Stream Deck Mini','version':MINI_VERSION,'page_files':PAGE_FILES,'pages':summary,'update_all':{'page':1,'physical_key':4,'target':'Scripts/update_all.sh'},'orientation':'rotate90CCW then flip top-bottom (upstream Mini driver)','frame_interval_ms':350}
     (output/'MINI_LAYOUT.json').write_text(json.dumps(info,indent=2)+'\n')
@@ -214,7 +214,7 @@ def prepare(base,output,docs=None):
                 data='data:image/gif;base64,'+base64.b64encode((icons/e['image']).read_bytes()).decode()
                 page_cards.append(f'<div class="key"><img src="{data}" alt="{e["label"]}"></div>')
             cards.append(f'<section><h2>{page+1} · {PAGE_TITLES[page]}</h2><div class="deck">'+''.join(page_cards)+'</div></section>')
-        page='''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Button Goblin · MiSTer Stream Deck Mini</title><link rel="canonical" href="https://buttongoblin.monster/mini.html"><style>html{color-scheme:dark}body{background:#0a1020;color:#eef4fc;font:16px/1.6 system-ui;max-width:760px;margin:40px auto;padding:0 20px}a{color:#74e5c7}h1{font-size:38px;line-height:1.1}.deck{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:20px;background:#030609;border:1px solid #3c4350;border-radius:22px}.key{text-align:center;background:#101720;border-radius:10px;padding:12px}.key img{display:block;width:100%;max-width:160px;margin:auto;image-rendering:pixelated;aspect-ratio:1}section{margin:35px 0}.note{border-left:3px solid #74e5c7;padding:10px 18px;background:#172334}code{color:#a5d4fa}.goblin-mascot{display:block;width:260px;max-width:80%;height:auto;margin:0 auto 24px;image-rendering:pixelated;border-radius:24px}</style><img class="goblin-mascot" src="@GOBLIN_IMAGE@" width="1254" height="1254" alt="Button Goblin pressing a glowing six-key Stream Deck"><h1>Button Goblin</h1><p>MiSTer × Stream Deck Mini</p><p>Six keys. Animated consoles. Update All on the first page.</p><p><a href="@MINI_DOWNLOAD@">Download Mini v@MINI_VERSION@ ZIP</a> · <a href="https://github.com/pxpxpxp/buttongoblin/blob/main/mini/README.md">Installation and source</a> · <a href="https://buttongoblin.monster/">Mini + MK.2 guide</a></p><div class="note">Physical key 4 on Home runs Update All. Key 6 cycles through all six pages; Shortcuts includes Back to Home. Tap Home’s brightness key for five ascending levels, or hold it one second to jump to Navigation. Keyboard shortcuts turn green while held. Page 6 adds Y and N for the active MiSTer screen; these keyboard events do not feed the background Update All process, which runs with non-interactive input.</div>'''+''.join(cards)+'''<h2>Use both decks</h2><p><a href="@DUAL_DOWNLOAD@">Download the Dual v@DUAL_VERSION@ bundle</a>, copy its complete Scripts contents, and run StreamDeck_Both_Enable.sh. The Mini and 15-key MK.2 have separate configurations, services and brightness.</p><h2>Install Mini only</h2><p>When upgrading Mini v1.0.0/v1.0.1, first run the old StreamDeck_Disable.sh. For later Mini versions, use StreamDeck_Mini_Disable.sh. Back up custom settings. Copy this Mini package’s Scripts contents, including hidden .config, into /media/fat/Scripts; run StreamDeck_Mini_Enable.sh. Install Update All separately at Scripts/update_all.sh.</p><p>This is a Mini-specific build. The 15-key editor and MK.2 artwork exports do not apply. The Mini build is host-tested and cross-compiled; physical Mini orientation, brightness, and USB playback need your hardware check.</p></html>'''
+        page='''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Button Goblin · MiSTer Stream Deck Mini</title><link rel="canonical" href="https://buttongoblin.monster/mini.html"><style>html{color-scheme:dark}body{background:#0a1020;color:#eef4fc;font:16px/1.6 system-ui;max-width:760px;margin:40px auto;padding:0 20px}a{color:#74e5c7}h1{font-size:38px;line-height:1.1}.deck{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:20px;background:#030609;border:1px solid #3c4350;border-radius:22px}.key{text-align:center;background:#101720;border-radius:10px;padding:12px}.key img{display:block;width:100%;max-width:160px;margin:auto;image-rendering:pixelated;aspect-ratio:1}section{margin:35px 0}.note{border-left:3px solid #74e5c7;padding:10px 18px;background:#172334}code{color:#a5d4fa}.goblin-mascot{display:block;width:260px;max-width:80%;height:auto;margin:0 auto 24px;image-rendering:pixelated;border-radius:24px}</style><img class="goblin-mascot" src="@GOBLIN_IMAGE@" width="1254" height="1254" alt="Button Goblin pressing a glowing six-key Stream Deck"><h1>Button Goblin</h1><p>MiSTer × Stream Deck Mini</p><p>Six keys. Animated consoles. Update All on the first page.</p><p><a href="@MINI_DOWNLOAD@">Download Mini v@MINI_VERSION@ ZIP</a> · <a href="https://github.com/pxpxpxp/buttongoblin/blob/main/mini/README.md">Installation and source</a> · <a href="https://buttongoblin.monster/">Mini + MK.2 guide</a></p><div class="note">Physical key 4 on Home runs Update All. Key 6 cycles through all six pages; Shortcuts includes Back to Home. Tap Home’s brightness key for five ascending levels, or hold it one second to jump to Navigation. Keyboard shortcuts turn green while held. Page 6 adds Y and N for the active MiSTer screen; these keyboard events do not feed the background Update All process, which runs with non-interactive input.</div>'''+''.join(cards)+'''<h2>Use both decks</h2><p><a href="@DUAL_DOWNLOAD@">Download the Dual v@DUAL_VERSION@ bundle</a>, copy its complete Scripts contents, and run ButtonGoblin_Both_Enable.sh. The Mini and 15-key MK.2 have separate configurations, services and brightness.</p><h2>Install Mini only</h2><p>Copy this package’s complete Scripts contents, including hidden .config, into /media/fat/Scripts. Connect the Mini to MiSTer’s USB host hub and run ButtonGoblin_Mini_Enable.sh. The service starts immediately and at boot. Install Update All separately at Scripts/update_all.sh.</p><p>This is a Mini-specific build. The 15-key editor and MK.2 artwork exports do not apply. The Mini build is host-tested and cross-compiled; physical Mini orientation, brightness, and USB playback need your hardware check.</p></html>'''
         for token,value in [('GOBLIN_IMAGE',mascot),('MINI_DOWNLOAD',MINI_DOWNLOAD),('DUAL_DOWNLOAD',DUAL_DOWNLOAD),('MINI_VERSION',MINI_VERSION),('DUAL_VERSION',DUAL_VERSION)]:
             page=page.replace(f'@{token}@',value)
         docs.parent.mkdir(parents=True,exist_ok=True);docs.write_text(page)

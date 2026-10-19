@@ -8,7 +8,6 @@
 
 Turn an **Elgato Stream Deck MK.2** or **six-key Stream Deck Mini** into a dedicated MiSTer control panel. Launch cores and favorite games, navigate menus, adjust brightness, and run Update All from animated buttons. The launcher runs directly on MiSTer over USB.
 
-[![MK.2 build](https://github.com/pxpxpxp/buttongoblin/actions/workflows/release.yml/badge.svg)](https://github.com/pxpxpxp/buttongoblin/actions/workflows/release.yml)
 [![Mini and Dual build](https://github.com/pxpxpxp/buttongoblin/actions/workflows/mini-release.yml/badge.svg)](https://github.com/pxpxpxp/buttongoblin/actions/workflows/mini-release.yml)
 
 [15-key animated guide](https://buttongoblin.monster/) · [Mini animated guide](https://buttongoblin.monster/mini.html) · [MK.2 Deck Editor](https://buttongoblin.monster/editor/) · [All releases](https://github.com/pxpxpxp/buttongoblin/releases)
@@ -17,11 +16,11 @@ Turn an **Elgato Stream Deck MK.2** or **six-key Stream Deck Mini** into a dedic
 
 | Your setup | Download | Run after copying |
 | --- | --- | --- |
-| **Mini + 15-key MK.2 together** | **[Dual v1.0.3 ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.0.3/MiSTer_StreamDeck_Dual_v1_0_3.zip)** | `StreamDeck_Both_Enable.sh` |
-| Six-key Mini | [Mini v1.0.5 ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/mini-v1.0.5/MiSTer_StreamDeck_Mini_v1_0_5.zip) | `StreamDeck_Mini_Enable.sh` |
-| 15-key MK.2 | [Current MK.2 in Dual v1.0.3](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.0.3/MiSTer_StreamDeck_Dual_v1_0_3.zip) | `StreamDeck_Enable.sh` |
+| **Mini + 15-key MK.2 together** | **[Dual v1.1.0 ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.1.0/ButtonGoblin_Dual_v1_1_0.zip)** | `ButtonGoblin_Both_Enable.sh` |
+| Six-key Mini | [Mini v1.1.0 ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/mini-v1.1.0/ButtonGoblin_Mini_v1_1_0.zip) | `ButtonGoblin_Mini_Enable.sh` |
+| 15-key MK.2 | [Current MK.2 in Dual v1.1.0](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.1.0/ButtonGoblin_Dual_v1_1_0.zip) | `ButtonGoblin_Enable.sh` |
 
-The Dual bundle also works with only the MK.2 enabled. The [earlier standalone MK.2 v1 ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/v1/MiSTer_StreamDeck_v1.zip) remains available.
+The Dual bundle also works with only the MK.2 enabled.
 
 **Using both decks? Choose the Dual bundle.** It includes both binaries, independent configurations and service controls, and a shared lock to prevent duplicate Update All jobs from the two launchers.
 
@@ -36,17 +35,14 @@ The Dual bundle also works with only the MK.2 enabled. The [earlier standalone M
 
 ## Install
 
-1. **Download and extract** the ZIP for your setup from the table above.
-2. **If upgrading, wait for Update All to finish**, back up custom settings, and disable the services you will replace. Use `StreamDeck_Disable.sh` for MK.2, `StreamDeck_Mini_Disable.sh` for the current Mini, or `StreamDeck_Both_Disable.sh` for both.
-3. Copy the package’s **Scripts contents** into `/media/fat/Scripts/`, including the hidden **.config** folder. Replace the matching binary, configurations, and artwork together.
-4. Connect your deck—or both decks—to MiSTer’s **USB host hub**, using a data-capable cable or adapter as needed.
-5. Run the matching **Enable** script from MiSTer’s Scripts menu. It starts the service and enables startup at boot.
+1. Download and extract the ZIP for your setup.
+2. Copy the package’s complete **Scripts contents** into `/media/fat/Scripts/`, including hidden **.config**.
+3. Connect your Elgato Stream Deck Mini, MK.2, or both to MiSTer’s USB host hub.
+4. Run **ButtonGoblin_Mini_Enable.sh** for Mini, **ButtonGoblin_Enable.sh** for MK.2, or **ButtonGoblin_Both_Enable.sh** for both. The selected services start immediately and at boot.
 
-> **Upgrading from Mini v1.0.0 or v1.0.1:** those versions used the MK.2’s directory. Run the old `StreamDeck_Disable.sh` before copying files. Restore Mini settings into `Scripts/.config/streamdeck-mini/` only. See the [migration instructions](mini/DUAL_README.md#install-both).
+Cores, games, BIOS files, favorites and Update All are separate installs. The Update All button expects `/media/fat/Scripts/update_all.sh`.
 
-To show hidden files, press **Command–Shift–period** in macOS Finder, or enable **View → Show → Hidden items** in Windows Explorer.
-
-**Cores, games, BIOS files, and Update All are separate installs.** The Update All button expects `/media/fat/Scripts/update_all.sh`; the package supplies the button and launcher integration.
+To show hidden files in macOS Finder, press **Command–Shift–period**. In Windows Explorer, enable **View → Show → Hidden items**.
 
 ## Run both decks together
 
@@ -54,9 +50,9 @@ The Dual bundle keeps both decks active on the same MiSTer. Each has its own pag
 
 | Device | Configuration folder | Enable / disable scripts |
 | --- | --- | --- |
-| 15-key MK.2 | `Scripts/.config/streamdeck/` | `StreamDeck_Enable.sh` / `StreamDeck_Disable.sh` |
-| Six-key Mini | `Scripts/.config/streamdeck-mini/` | `StreamDeck_Mini_Enable.sh` / `StreamDeck_Mini_Disable.sh` |
-| Both | Both folders above | `StreamDeck_Both_Enable.sh` / `StreamDeck_Both_Disable.sh` |
+| 15-key MK.2 | `Scripts/.config/buttongoblin/` | `ButtonGoblin_Enable.sh` / `ButtonGoblin_Disable.sh` |
+| Six-key Mini | `Scripts/.config/buttongoblin-mini/` | `ButtonGoblin_Mini_Enable.sh` / `ButtonGoblin_Mini_Disable.sh` |
+| Both | Both folders above | `ButtonGoblin_Both_Enable.sh` / `ButtonGoblin_Both_Disable.sh` |
 
 Either service can be stopped or reloaded independently. Each launcher selects its supported USB device family. If Update All is already running through one of the included launchers, a second request is rejected and logged; retry when it finishes. This coordination does not cover updater jobs started manually.
 
@@ -110,7 +106,7 @@ Release held buttons before using a new page. Update All feedback remains associ
 
 **MK.2:** use the [Deck Editor](https://buttongoblin.monster/editor/) on your computer. Assign actions, paths, and artwork; save an editable project; then export for MiSTer. Disable the MK.2 service before copying the export and enable it afterward. The standalone MK.2 ZIP also includes an offline editor.
 
-**Mini:** edit the six configuration files in `Scripts/.config/streamdeck-mini/`. Keep a Next or Back action available. The current web editor targets the 15-key MK.2; its exports do not fit the Mini.
+**Mini:** edit the six configuration files in `Scripts/.config/buttongoblin-mini/`. Keep a Next or Back action available. The current web editor targets the 15-key MK.2; its exports do not fit the Mini.
 
 Configuration indices start at zero: `key.0` means physical button 1. Labels are metadata; visible lettering is part of the artwork.
 
@@ -137,22 +133,22 @@ For SSH diagnostics:
 
 ```sh
 # 15-key MK.2
-sh /media/fat/Scripts/.config/streamdeck/extras/StreamDeck_Diagnostics.sh
+sh /media/fat/Scripts/.config/buttongoblin/extras/ButtonGoblin_Diagnostics.sh
 
 # Six-key Mini
-sh /media/fat/Scripts/.config/streamdeck-mini/extras/StreamDeck_Mini_Diagnostics.sh
+sh /media/fat/Scripts/.config/buttongoblin-mini/extras/ButtonGoblin_Mini_Diagnostics.sh
 ```
 
-MK.2 runtime files use `/tmp/mister_streamdeck.*`; Mini files use `/tmp/mister_streamdeck_mini.*`. Each service handles worker recovery and USB reconnection. Invalid configuration reloads retain the prior working set.
+MK.2 runtime files use `/tmp/buttongoblin.*`; Mini files use `/tmp/buttongoblin_mini.*`. Each service handles worker recovery and USB reconnection. Invalid configuration reloads retain the prior working set.
 
 ## Build and verification
 
 GitHub Actions restores integrity-checked source artwork and scripts, prepares the device-specific packages, runs host tests, and builds **static Cortex-A9 ARM binaries** with **Zig 0.13.0**. Releases include ZIPs and SHA-256 checksums.
 
-- **[MK.2 workflow](.github/workflows/release.yml):** configuration, input handling, page switching, animation loading, failure handling, and memory checks.
+- **[MK.2 checks](.github/workflows/mini-release.yml):** configuration, input handling, page switching, animation loading, failure handling, and memory checks.
 - **[Mini and Dual workflow](.github/workflows/mini-release.yml):** Mini protocol and sanitizer checks, MK.2 regression tests, simultaneous host services, independent shutdown and boot entries, and Update All exclusion in both directions.
 
-Current native runtimes are [`mk2/streamdeck-mk2.c`](mk2/streamdeck-mk2.c) and [`mini/streamdeck-mini.c`](mini/streamdeck-mini.c). The Dual build copies these sources directly, without patching C code during packaging. Build preparation lives in [`tools/`](tools/) and [`mini/`](mini/); package versions and names are defined in [`mini/releases.py`](mini/releases.py). Each package includes the resulting native source and a `source/build.sh` script. Rebuild on a computer with Zig installed by running that script from the appropriate device’s installation folder.
+Current native runtimes are [`mk2/buttongoblin-mk2.c`](mk2/buttongoblin-mk2.c) and [`mini/buttongoblin-mini.c`](mini/buttongoblin-mini.c). The Dual build copies these sources directly, without patching C code during packaging. Build preparation lives in [`tools/`](tools/) and [`mini/`](mini/); package versions and names are defined in [`mini/releases.py`](mini/releases.py). Each package includes the resulting native source and a `source/build.sh` script. Rebuild on a computer with Zig installed by running that script from the appropriate device’s installation folder.
 
 **Hardware validation:** host tests and ARM compilation do not verify physical image orientation, USB timing, hub power, controller responsiveness, or a complete updater run. Check those on your MiSTer, particularly with both decks attached.
 
@@ -162,4 +158,4 @@ Each release includes **LICENSE.txt** and **ARTWORK_CREDITS.txt** with the proje
 
 ---
 
-**[Download Dual](https://github.com/pxpxpxp/buttongoblin/releases/tag/dual-v1.0.3)** · **[Mini guide](https://buttongoblin.monster/mini.html)** · **[15-key guide](https://buttongoblin.monster/)** · **[MK.2 editor](https://buttongoblin.monster/editor/)**
+**[Download Dual](https://github.com/pxpxpxp/buttongoblin/releases/tag/dual-v1.1.0)** · **[Mini guide](https://buttongoblin.monster/mini.html)** · **[15-key guide](https://buttongoblin.monster/)** · **[MK.2 editor](https://buttongoblin.monster/editor/)**

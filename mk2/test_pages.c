@@ -1,5 +1,5 @@
 #define main app_main
-#include "streamdeck-mk2.c"
+#include "buttongoblin-mk2.c"
 #undef main
 #include <assert.h>
 static int events;

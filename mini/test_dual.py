@@ -4,7 +4,7 @@ from pathlib import Path
 
 root=Path(sys.argv[1]).resolve()
 mini_bin=Path(sys.argv[2]).resolve();mk2_bin=Path(sys.argv[3]).resolve()
-apps=[root/'Scripts/.config/streamdeck-mini',root/'Scripts/.config/streamdeck']
+apps=[root/'Scripts/.config/buttongoblin-mini',root/'Scripts/.config/buttongoblin']
 
 def wait_for(check,seconds=6):
     until=time.monotonic()+seconds
@@ -44,9 +44,9 @@ with tempfile.TemporaryDirectory(prefix='dual-deck-test-') as directory:
     hook=temp/'S99user';hook.touch()
     startup=fake/'linux/user-startup.sh';startup.write_text('#!/bin/sh\necho keep-me\nexit 0\n')
     boot_scripts=[]
-    for app,binary,prefix in zip(apps,[mini_bin,mk2_bin],['StreamDeck_Mini_','StreamDeck_']):
+    for app,binary,prefix in zip(apps,[mini_bin,mk2_bin],['ButtonGoblin_Mini_','ButtonGoblin_']):
         target=fake/'Scripts/.config'/app.name;(target/'extras').mkdir(parents=True)
-        (target/'streamdeck-mister').write_text('#!/bin/sh\nexit 0\n');(target/'streamdeck-mister').chmod(0o755)
+        (target/'buttongoblin-mister').write_text('#!/bin/sh\nexit 0\n');(target/'buttongoblin-mister').chmod(0o755)
         for operation in ['Start','Stop']:(target/'extras'/f'{prefix}{operation}.sh').write_text('#!/bin/sh\nexit 0\n')
         paths=[]
         for operation in ['Enable','Disable']:
@@ -55,14 +55,14 @@ with tempfile.TemporaryDirectory(prefix='dual-deck-test-') as directory:
             path.write_text(src.read_text().replace('/media/fat',str(fake)).replace('/etc/init.d/S99user',str(hook)))
             paths.append(path)
         boot_scripts.append(paths)
-    env=dict(os.environ,STREAMDECK_BOOT_CONFIG_ONLY='1')
+    env=dict(os.environ,BUTTONGOBLIN_BOOT_CONFIG_ONLY='1')
     for enable,_ in boot_scripts:subprocess.run(['sh',str(enable)],env=env,check=True,capture_output=True)
-    content=startup.read_text();assert content.count('# STREAMDECK-MINI BEGIN')==1 and content.count('# STREAMDECK-MK2 BEGIN')==1 and 'echo keep-me' in content
+    content=startup.read_text();assert content.count('# BUTTONGOBLIN-MINI BEGIN')==1 and content.count('# BUTTONGOBLIN-MK2 BEGIN')==1 and 'echo keep-me' in content
     # Repeated enables must not accumulate boot blocks.
     subprocess.run(['sh',str(boot_scripts[0][0])],env=env,check=True,capture_output=True)
-    assert startup.read_text().count('# STREAMDECK-MINI BEGIN')==1
+    assert startup.read_text().count('# BUTTONGOBLIN-MINI BEGIN')==1
     subprocess.run(['sh',str(boot_scripts[0][1])],check=True,capture_output=True)
-    assert 'STREAMDECK-MINI' not in startup.read_text() and '# STREAMDECK-MK2 BEGIN' in startup.read_text()
+    assert 'BUTTONGOBLIN-MINI' not in startup.read_text() and '# BUTTONGOBLIN-MK2 BEGIN' in startup.read_text()
     subprocess.run(['sh',str(boot_scripts[1][1])],check=True,capture_output=True)
     assert startup.read_text()=='#!/bin/sh\necho keep-me\nexit 0\n'
     print('PASS: independent boot blocks, repeated enables and preservation of unrelated startup commands')
@@ -70,10 +70,10 @@ with tempfile.TemporaryDirectory(prefix='dual-deck-test-') as directory:
     # A failure from the first deck must not skip the second deck's operation.
     for operation in ['Enable','Disable']:
         marker=fake/'mini-attempted'
-        (fake/'Scripts'/f'StreamDeck_{operation}.sh').write_text('#!/bin/sh\nexit 1\n')
-        (fake/'Scripts'/f'StreamDeck_Mini_{operation}.sh').write_text('#!/bin/sh\ntouch "'+str(marker)+'"\n')
+        (fake/'Scripts'/f'ButtonGoblin_{operation}.sh').write_text('#!/bin/sh\nexit 1\n')
+        (fake/'Scripts'/f'ButtonGoblin_Mini_{operation}.sh').write_text('#!/bin/sh\ntouch "'+str(marker)+'"\n')
         wrapper=temp/f'both-{operation}.sh'
-        wrapper.write_text((root/'Scripts'/f'StreamDeck_Both_{operation}.sh').read_text().replace('/media/fat',str(fake)))
+        wrapper.write_text((root/'Scripts'/f'ButtonGoblin_Both_{operation}.sh').read_text().replace('/media/fat',str(fake)))
         result=subprocess.run(['sh',str(wrapper)],capture_output=True)
         assert result.returncode==1 and marker.exists()
         marker.unlink()
@@ -85,7 +85,7 @@ with tempfile.TemporaryDirectory(prefix='dual-deck-test-') as directory:
     for index,app in enumerate(apps):
         source=temp/f'driver{index}.c';binary=temp/f'driver{index}'
         source.write_text('''#define main launcher_main
-#include "'''+str(app/'source/streamdeck.c')+'''"
+#include "'''+str(app/'source/buttongoblin.c')+'''"
 #undef main
 int main(int argc,char **argv){
   if(argc!=2)return 2;
@@ -118,7 +118,7 @@ int main(int argc,char **argv){
     assert runs.read_text().splitlines()==['run','run']
     print('PASS: cross-device Update All exclusion and lock release, in both directions')
 
-assert not (root/'Scripts/.config/streamdeck-mini/buttons.conf').samefile(root/'Scripts/.config/streamdeck/buttons.conf')
-assert 'mister_streamdeck_mini' in (apps[0]/'extras/StreamDeck_Mini_Start.sh').read_text()
-assert 'mister_streamdeck_mini' not in (apps[1]/'extras/StreamDeck_Start.sh').read_text()
+assert not (root/'Scripts/.config/buttongoblin-mini/buttons.conf').samefile(root/'Scripts/.config/buttongoblin/buttons.conf')
+assert 'buttongoblin_mini' in (apps[0]/'extras/ButtonGoblin_Mini_Start.sh').read_text()
+assert 'buttongoblin_mini' not in (apps[1]/'extras/ButtonGoblin_Start.sh').read_text()
 print('PASS: separate configuration trees, service names and runtime paths')

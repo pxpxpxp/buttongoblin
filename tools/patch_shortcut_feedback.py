@@ -1,8 +1,8 @@
 """Patch page-two hold feedback and verify Back acts on release."""
 import sys
 from pathlib import Path
-app=Path(sys.argv[1])/'Scripts/.config/streamdeck'
-p=app/'source/streamdeck.c';s=p.read_text()
+app=Path(sys.argv[1])/'Scripts/.config/buttongoblin'
+p=app/'source/buttongoblin.c';s=p.read_text()
 old='if(cfg->keys[k].action==BACK_PAGE){if(states[k]&&!inputs.down[k]){inputs.down[k]=1;switch_page(0);return;}inputs.down[k]=states[k];continue;}'
 new='if(cfg->keys[k].action==BACK_PAGE){if(states[k]!=inputs.down[k]){visual(k,states[k]?1:0,now);restore[k]=0;if(!states[k]){inputs.down[k]=0;switch_page(0);return;}}inputs.down[k]=states[k];continue;}'
 assert old in s;s=s.replace(old,new)

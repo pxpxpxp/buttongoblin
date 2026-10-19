@@ -1,26 +1,20 @@
-# Button Goblin · Stream Deck Mini · v1.0.5
+# Button Goblin · Stream Deck Mini · v1.1.0
 
 <img src="../docs/assets/button-goblin.webp" width="220" height="220" alt="Button Goblin">
 
-[Download Mini ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/mini-v1.0.5/MiSTer_StreamDeck_Mini_v1_0_5.zip) · [Animated Mini guide](https://buttongoblin.monster/mini.html) · [15-key MK.2 build](../README.md)
+[Download Mini ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/mini-v1.1.0/ButtonGoblin_Mini_v1_1_0.zip) · [Animated Mini guide](https://buttongoblin.monster/mini.html) · [15-key MK.2 build](../README.md)
 
 A six-key port of the existing native MiSTer launcher. **Update All is on the first page, physical key 4.** The Mini uses its own USB protocol and prepared 80×80 BMP animations. No image decoding happens on MiSTer.
 
-## Mini v1.0.5 · Y / N page
+## Mini v1.1.0 · Y / N page
 
 Page 6 adds animated Y and N keys, Back to Home, and Next. Letters turn green while held and release safely when leaving the page. Copy the new `buttons-confirm.conf` together with the updated binary and artwork. These keys target the active MiSTer screen; the background Update All process has separate non-interactive input.
 
-## Previous v1.0.4 input fix
-
-Initial page images now finish before animations resume, preventing slow USB uploads from keeping button input blocked. Mini input reads use the report ID and six key-state bytes, following the upstream Mini driver; report padding is ignored. Keys held during startup or a transition remain suppressed until released.
-
-Diagnostics now include `input_reports`, `key_presses`, `startup_stage` and `page_transition`. The first 12 observed presses and first five malformed input reports are logged in `/tmp/mister_streamdeck_mini.log`.
-
 ## Run both decks together
 
-Use the **[Dual v1.0.3 bundle and setup instructions](DUAL_README.md)** to install the Mini and 15-key MK.2 together. Run `StreamDeck_Both_Enable.sh` after copying the complete bundle.
+Use the **[Dual v1.1.0 bundle and setup instructions](DUAL_README.md)** to install the Mini and 15-key MK.2 together. Run `ButtonGoblin_Both_Enable.sh` after copying the complete bundle.
 
-Mini v1.0.5 uses `streamdeck-mini`, `StreamDeck_Mini_Enable.sh` and `/tmp/mister_streamdeck_mini.*`. If upgrading from Mini v1.0.0/v1.0.1, first run the old `StreamDeck_Disable.sh` and back up Mini settings; those versions occupied the MK.2 directory.
+Mini v1.1.0 uses `buttongoblin-mini`, `ButtonGoblin_Mini_Enable.sh` and `/tmp/buttongoblin_mini.*`.
 
 ## Home · Page 1
 
@@ -44,17 +38,16 @@ Mini v1.0.5 uses `streamdeck-mini`, `StreamDeck_Mini_Enable.sh` and `/tmp/mister
 
 The navigation shortcuts have matching green artwork while held. Back retains the fifth-cycle Stay Puft morph and returns Home on release. Next also shows green while pressed. The original startup mosaic is recomposed for the Mini’s 3×2 layout and fades in and out.
 
-## Install or upgrade
+## Install
 
-1. Download and extract **MiSTer_StreamDeck_Mini_v1_0_5.zip**.
-2. Back up custom configurations and wait for any Update All job to finish. For Mini v1.0.0/v1.0.1, run the old **StreamDeck_Disable.sh** before migrating. For later Mini versions, use **StreamDeck_Mini_Disable.sh**. The separate MK.2 service can remain installed.
-3. Copy the package’s **Scripts contents** into `/media/fat/Scripts/`, including the hidden **.config** folder. Replace the binary, configurations, and artwork together.
-4. Connect the Mini to MiSTer’s USB host hub using its cable; use a data-capable adapter if its connector requires one.
-5. Run **StreamDeck_Mini_Enable.sh**. The launcher also starts at boot.
+1. Download and extract **ButtonGoblin_Mini_v1_1_0.zip**.
+2. Copy the package’s complete **Scripts contents**, including hidden **.config**, into `/media/fat/Scripts/`.
+3. Connect your Elgato Stream Deck Mini to MiSTer’s USB host hub with a data-capable connection.
+4. Run **ButtonGoblin_Mini_Enable.sh** from MiSTer’s Scripts menu. The service starts immediately and at boot.
 
 **Update All itself is installed separately.** This package installs its first-page button and launcher integration, and expects the updater at `Scripts/update_all.sh`. It does not download or replace your updater. Cores, games, favorites, and BIOS files are also installed separately.
 
-The runtime remains under `/media/fat/Scripts/.config/streamdeck-mini/`. The Mini has its own services, boot block and logs, so it can run alongside a 15-key MK.2. For both devices, use the [combined dual-deck package](DUAL_README.md), which also coordinates Update All between both launchers.
+The runtime remains under `/media/fat/Scripts/.config/buttongoblin-mini/`. The Mini has its own services, boot block and logs, so it can run alongside a 15-key MK.2. For both devices, use the [combined dual-deck package](DUAL_README.md), which also coordinates Update All between both launchers.
 
 ## Configuration and diagnostics
 
@@ -64,19 +57,19 @@ The six files are `buttons.conf`, `buttons-page2.conf`, `buttons-page3.conf`, `b
 
 Prepared `.sma` files contain Mini BMP frames. They are not compatible with MK.2 `.sda` files. Original 72×72 character art is centered inside an 80×80 canvas, preserving the existing pixel geometry. Playback uses at least 350 ms per frame to limit USB traffic; slow uploads naturally reduce the frame rate without accumulating frames.
 
-Run `extras/StreamDeck_Mini_Diagnostics.sh` over SSH for connection, worker, and updater logs. A missing updater or bad game path is reported through the existing failure feedback. The service retains supervised restart, USB reconnection, held-key rearming, queue clearing on page changes, and bounded image caches.
+Run `extras/ButtonGoblin_Mini_Diagnostics.sh` over SSH for connection, worker, and updater logs. A missing updater or bad game path is reported through the existing failure feedback. The service retains supervised restart, USB reconnection, held-key rearming, queue clearing on page changes, and bounded image caches.
 
 All six page configurations must load successfully. A failed reload keeps the complete previous configuration set. Update All runs once at a time; Home shows its completion when you return.
 
 ## Build and verification
 
-GitHub Actions restores the existing v1 build inputs, generates the current character/control artwork, converts it to Mini format, runs the Mini tests, cross-compiles a static Cortex-A9 ARM binary with Zig 0.13.0, and publishes the ZIP and SHA-256 checksum under the **mini-v1.0.5** release.
+GitHub Actions restores the existing v1 build inputs, generates the current character/control artwork, converts it to Mini format, runs the Mini tests, cross-compiles a static Cortex-A9 ARM binary with Zig 0.13.0, and publishes the ZIP and SHA-256 checksum under the **mini-v1.1.0** release.
 
-The standalone native source is [streamdeck-mini.c](streamdeck-mini.c). `prepare_mini.py` prepares the package; `test_mini.c` and `test_package.py` check the protocol, paging, feedback, cache validation, and first-page updater mapping. The packaged source can be rebuilt with `sh source/build.sh` after installing Zig on a computer.
+The standalone native source is [buttongoblin-mini.c](buttongoblin-mini.c). `prepare_mini.py` prepares the package; `test_mini.c` and `test_package.py` check the protocol, paging, feedback, cache validation, and first-page updater mapping. The packaged source can be rebuilt with `sh source/build.sh` after installing Zig on a computer.
 
 Supported Mini USB product IDs: `0063`, `0090`, `00B3`, and `00B8`, vendor `0FD9`. The binary rejects unrelated Stream Deck models.
 
-**Hardware validation:** button response with Mini v1.0.4 on a physical Mini connected to MiSTer was user-confirmed on 2026-10-17. Host regression and sanitizer tests also passed. This confirms the reported button issue is resolved on that setup; a complete Update All run and extended shared-hub operation require their own checks.
+**Hardware validation:** native button input has been user-confirmed on a physical Mini connected to MiSTer. Host regression and sanitizer tests also pass. Orientation, shared-hub operation and complete updater runs require checks on your hardware.
 
 ## Performance and shared USB hubs
 

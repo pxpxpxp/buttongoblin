@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 root, docs = map(Path, sys.argv[1:3])
-app = root / 'Scripts/.config/streamdeck'
+app = root / 'Scripts/.config/buttongoblin'
 out = app / 'icons/custom'
 out.mkdir(parents=True, exist_ok=True)
 BG = (16,23,32)

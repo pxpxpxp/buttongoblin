@@ -1,4 +1,4 @@
-name: Build and release Mini and Dual Stream Decks
+name: Build and release Button Goblin
 on:
   workflow_dispatch:
   push:
@@ -7,6 +7,8 @@ on:
       - '.github/workflows/mini-release.yml'
       - 'mini/**'
       - 'docs/assets/**'
+      - 'docs/index.html'
+      - 'docs/editor/**'
       - 'mk2/**'
       - 'build-inputs/**'
       - 'tools/apply_shortcut_layout.py'
@@ -15,7 +17,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: streamdeck-mini-v1-release
+  group: buttongoblin-mini-v1-release
   cancel-in-progress: false
 jobs:
   mini:
@@ -25,12 +27,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Define versioned package names
         run: python3 mini/releases.py --github-env "$GITHUB_ENV"
-      - name: Restore verified v1 input artwork and scripts
+      - name: Restore verified Button Goblin artwork and scripts
         run: |
           set -euo pipefail
           test "$(find build-inputs -name '*.b64' | wc -l)" -eq 24
           cat build-inputs/*.b64 | base64 --decode > /tmp/mini-inputs.tar.gz
-          echo '0858947cd0e25ca9b4e8629f81358e4168f4e13685c4177699813c22118fa1fe  /tmp/mini-inputs.tar.gz' | sha256sum --check
+          echo '6dcec86f0e3dd01e932c7b766c1791c344dfb0a78fe210f199626327b74ea807  /tmp/mini-inputs.tar.gz' | sha256sum --check
           mkdir -p /tmp/mini-base
           tar -xzf /tmp/mini-inputs.tar.gz -C /tmp/mini-base
           cp -a docs /tmp/mini-docs
@@ -50,16 +52,16 @@ jobs:
       - name: Test Mini protocol, paging and package
         run: |
           set -eu
-          gcc -O2 -Wall -Wextra -Werror mini/streamdeck-mini.c -o /tmp/mini-host
+          gcc -O2 -Wall -Wextra -Werror mini/buttongoblin-mini.c -o /tmp/mini-host
           gcc -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined mini/test_mini.c -o /tmp/test-mini
-          ASAN_OPTIONS=detect_leaks=1 /tmp/test-mini "$PWD/package/$MINI_BUNDLE/Scripts/.config/streamdeck-mini/buttons.conf"
+          ASAN_OPTIONS=detect_leaks=1 /tmp/test-mini "$PWD/package/$MINI_BUNDLE/Scripts/.config/buttongoblin-mini/buttons.conf"
           python3 mini/test_package.py package/$MINI_BUNDLE /tmp/mini-host
           find package -name '*.sh' -exec sh -n '{}' ';'
       - name: Test MK.2 and simultaneous service operation
         run: |
           set -eu
-          app=package/$DUAL_BUNDLE/Scripts/.config/streamdeck
-          gcc -O2 -Wall -Wextra -Werror "$app/source/streamdeck.c" -o /tmp/mk2-host
+          app=package/$DUAL_BUNDLE/Scripts/.config/buttongoblin
+          gcc -O2 -Wall -Wextra -Werror "$app/source/buttongoblin.c" -o /tmp/mk2-host
           gcc -O2 -Wall -Wextra -Werror "$app/source/test_internal.c" -o /tmp/mk2-internal
           python3 "$app/source/test_host.py" /tmp/mk2-host
           python3 "$app/source/test_failures.py" /tmp/mk2-host /tmp/mk2-internal
@@ -71,6 +73,8 @@ jobs:
           gcc -O2 -Wall -Wextra -Werror "$app/source/test_memory.c" -o /tmp/mk2-memory
           (cd "$app" && /tmp/mk2-memory buttons.conf icons)
           python3 mini/test_dual.py package/$DUAL_BUNDLE /tmp/mini-host /tmp/mk2-host
+          python3 mini/test_branding.py package/$MINI_BUNDLE package/$DUAL_BUNDLE
+          node --check docs/editor/app.js
       - name: Install pinned Zig compiler
         run: |
           set -eu
@@ -78,22 +82,22 @@ jobs:
           tar -xJf /tmp/mini-zig.tar.xz -C /tmp
           echo '/tmp/zig-linux-x86_64-0.13.0' >> "$GITHUB_PATH"
       - name: Cross-compile the static MiSTer binary
-        working-directory: package/${{ env.MINI_BUNDLE }}/Scripts/.config/streamdeck-mini
+        working-directory: package/${{ env.MINI_BUNDLE }}/Scripts/.config/buttongoblin-mini
         run: |
           set -eu
           sh source/build.sh
-          file streamdeck-mister | tee /tmp/mini-binary-info
+          file buttongoblin-mister | tee /tmp/mini-binary-info
           grep -q ARM /tmp/mini-binary-info
           grep -q 'statically linked' /tmp/mini-binary-info
       - name: Cross-compile MK.2 and assemble both binaries
         run: |
           set -eu
-          app=package/$DUAL_BUNDLE/Scripts/.config/streamdeck
+          app=package/$DUAL_BUNDLE/Scripts/.config/buttongoblin
           sh "$app/source/build.sh"
-          file "$app/streamdeck-mister" | tee /tmp/mk2-binary-info
+          file "$app/buttongoblin-mister" | tee /tmp/mk2-binary-info
           grep -q ARM /tmp/mk2-binary-info
           grep -q 'statically linked' /tmp/mk2-binary-info
-          cp package/$MINI_BUNDLE/Scripts/.config/streamdeck-mini/streamdeck-mister package/$DUAL_BUNDLE/Scripts/.config/streamdeck-mini/streamdeck-mister
+          cp package/$MINI_BUNDLE/Scripts/.config/buttongoblin-mini/buttongoblin-mister package/$DUAL_BUNDLE/Scripts/.config/buttongoblin-mini/buttongoblin-mister
       - name: Package and verify the Mini release
         run: |
           set -eu
@@ -128,5 +132,5 @@ jobs:
               gh release create "$tag" "$bundle.zip" "$bundle.zip.sha256" --target "$GITHUB_SHA" --title "$title" --notes-file "$notes" --latest=false
             fi
           }
-          publish "$MINI_TAG" "$MINI_BUNDLE" "MiSTer Stream Deck Mini v$MINI_VERSION" mini/RELEASE_NOTES.md
-          publish "$DUAL_TAG" "$DUAL_BUNDLE" "MiSTer Stream Deck Dual v$DUAL_VERSION" mini/DUAL_README.md
+          publish "$MINI_TAG" "$MINI_BUNDLE" "Button Goblin Mini v$MINI_VERSION" mini/RELEASE_NOTES.md
+          publish "$DUAL_TAG" "$DUAL_BUNDLE" "Button Goblin Dual v$DUAL_VERSION" mini/DUAL_README.md

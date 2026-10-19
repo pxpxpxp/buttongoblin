@@ -1,13 +1,10 @@
-Mini v1.0.5 — animated Y / N page
+Button Goblin v1.1.0
 
-- Add page 6: Y / N / blank, Back to Home / blank / Next.
-- Y and N send native keyboard press/release events, animate, and turn green while held.
-- Release held keys on page changes; Next wraps through all six pages.
-- Keep Update All on Home/key 4 and preserve the v1.0.4 button fixes.
-- Update the Mini guide, page validation and input regression tests.
+Animated MiSTer launchers for Elgato Stream Deck Mini and MK.2. Launch cores and favorites, navigate menus, control brightness, and run Update All. Use either device independently or both together.
 
-The Dual v1.0.3 bundle includes Mini v1.0.5. The MK.2 layout is unchanged.
+Mini: six animated pages, Y/N keyboard buttons, Update All on Home/key 4, and green feedback while controls are held.
+MK.2: 15 console/utility keys and a second navigation page.
 
-Y/N keys type into the active MiSTer screen; they do not feed the background Update All process, which runs with non-interactive input. This release does not diagnose or fix the separately reported Update All failure.
+Install: copy the complete Scripts contents, including hidden .config, into /media/fat/Scripts. Run ButtonGoblin_Mini_Enable.sh for Mini or ButtonGoblin_Both_Enable.sh for both devices. The selected services start immediately and at boot. Cores, games, BIOS files and Update All are separate installs.
 
-Disable the service and back up custom settings before replacing all Scripts contents, including hidden .config. Copy the new buttons-confirm.conf together with the new binary and artwork, then enable the service. New page hardware behavior needs confirmation; the previous v1.0.4 button response was user-confirmed on 2026-10-17.
+Packages include native ARM binaries, prepared artwork, configuration files, guides and source. Checks cover input, scripts, boot entries, page transitions, memory bounds, and independent simultaneous services.
