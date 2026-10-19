@@ -21,4 +21,6 @@ editor=Path(__file__).resolve().parent.parent/'docs/editor/app.js'
 text=editor.read_text()
 assert "root = 'Scripts/.config/buttongoblin/'" in text
 assert 'ButtonGoblin_Enable.sh' in text and 'streamdeck' not in text.lower()
+assert "format: 'buttongoblin-v1'" in text
+assert 'ButtonGoblin_Layout.zip' in text and 'ButtonGoblin_Project.json' in text
 print('PASS: fresh Button Goblin folders, source, scripts, shell syntax and editor exports; no application aliases')

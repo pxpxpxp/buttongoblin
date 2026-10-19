@@ -22,7 +22,7 @@ function setProcessing(value) {
 // derived caches. Saved JSON omits device caches and hydrate rebuilds them.
 function defaults() {
     const p = {
-        format: 'mister-deck-v1',
+        format: 'buttongoblin-v1',
         brightness: 65,
         gap: 3000,
         keys: LABELS.map((label, i) => ({
@@ -44,7 +44,7 @@ function defaults() {
     return p;
 }
 
-function shortcutDefaults(){return {format:'mister-deck-v1',brightness:65,gap:3000,keys:SHORTCUT_PRESETS.map(p=>({label:p.label,action:p.action,target:'',trigger:'press',hold:700,icons:{normal:p.normal,request:p.request,error:p.normal},deviceIcons:{normal:p.device,request:p.requestDevice,error:p.device},animations:{normal:{frames:[...p.frames],durations:[...p.durations]},request:{frames:[...p.requestFrames],durations:[...p.durations]},error:{frames:[...p.frames],durations:[...p.durations]}},deviceAnimations:{normal:[...p.deviceFrames],request:[...p.requestDeviceFrames],error:[...p.deviceFrames]}}))};}
+function shortcutDefaults(){return {format:'buttongoblin-v1',brightness:65,gap:3000,keys:SHORTCUT_PRESETS.map(p=>({label:p.label,action:p.action,target:'',trigger:'press',hold:700,icons:{normal:p.normal,request:p.request,error:p.normal},deviceIcons:{normal:p.device,request:p.requestDevice,error:p.device},animations:{normal:{frames:[...p.frames],durations:[...p.durations]},request:{frames:[...p.requestFrames],durations:[...p.durations]},error:{frames:[...p.frames],durations:[...p.durations]}},deviceAnimations:{normal:[...p.deviceFrames],request:[...p.requestDeviceFrames],error:[...p.deviceFrames]}}))};}
 function selectPage(page){if(processing)return;pageProjects[activePage]=project;pageProjects.forEach(p=>{p.brightness=project.brightness;p.gap=project.gap;});activePage=page;project=pageProjects[page];selected=0;uploadSerial++;render();}
 function assetName(i){return (activePage===1?'page2_':'')+i;}
 function validateShortcuts(p){validate(p);if(p.keys.some(k=>!SHORTCUT_ACTIONS.includes(k.action)))throw Error('Page two supports keyboard shortcuts, Back, or no action. Put launchers and scripts on page one.');return p;}
@@ -110,7 +110,7 @@ function clean(s, max, allowEmpty = true) {
 
 // Reject invalid imported/agent-supplied values before mutating the live layout.
 function validate(p) {
-    if (!p || p.format !== 'mister-deck-v1' || !Array.isArray(p.keys) || p.keys.length !== 15) throw Error('Open a MiSTer Deck project with exactly 15 keys.');
+    if (!p || p.format !== 'buttongoblin-v1' || !Array.isArray(p.keys) || p.keys.length !== 15) throw Error('Open a Button Goblin project with exactly 15 keys.');
     if (!Number.isInteger(p.brightness) || p.brightness < 0 || p.brightness > 100 || !Number.isInteger(p.gap) || p.gap < 100 || p.gap > 30000) throw Error('Brightness must be 0–100 and cooldown 100–30000 ms.');
     p.keys.forEach((k, i) => {
         if (!k || !clean(k.label, 95, false) || !clean(k.target, 1000) || !ACTIONS.includes(k.action) || !['press', 'release', 'hold'].includes(k.trigger) || !Number.isInteger(k.hold) || k.hold < 100 || k.hold > 10000) throw Error(`Check the label, path and trigger on key ${i}.`);
@@ -411,7 +411,7 @@ $('restoreIcon').onclick = () => {
 };
 $('export').onclick = () => {
     try {
-        download(zip(exportFiles()), 'MiSTer_Deck_Layout.zip');
+        download(zip(exportFiles()), 'ButtonGoblin_Layout.zip');
         message('Export downloaded. Copy all exported folders onto /media/fat, then enable.');
     } catch (e) {
         message(e.message, true);
@@ -423,7 +423,7 @@ $('save').onclick = () => {
         const p = completeProject();
         download(new Blob([JSON.stringify(p, null, 2)], {
             type: 'application/json'
-        }), 'MiSTer_Deck_Project.json');
+        }), 'ButtonGoblin_Project.json');
         message('Project saved, including your custom icons.');
     } catch (e) {
         message(e.message, true);
