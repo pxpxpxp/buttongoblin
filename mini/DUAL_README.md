@@ -1,4 +1,6 @@
-# MiSTer × two Stream Decks · Dual v1.0.3
+# Button Goblin · Dual v1.0.3
+
+<img src="../docs/assets/button-goblin.webp" width="220" height="220" alt="Button Goblin">
 
 Run a six-key Stream Deck Mini and a 15-key Stream Deck MK.2 together on one MiSTer. Both stay active, with independent pages, artwork and brightness. Update All is on the Mini's first page, physical key 4, and on the MK.2's first page, physical key 14.
 

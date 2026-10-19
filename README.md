@@ -1,4 +1,8 @@
-# MiSTer × Stream Deck
+# Button Goblin
+
+<img src="docs/assets/button-goblin.webp" width="280" height="280" alt="Button Goblin pressing a glowing six-key Stream Deck">
+
+**MiSTer × Stream Deck**
 
 **Animated console launchers. MiSTer shortcuts. One deck—or two.**
 

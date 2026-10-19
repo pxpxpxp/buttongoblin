@@ -1,4 +1,6 @@
-# MiSTer × Stream Deck Mini · v1.0.5
+# Button Goblin · Stream Deck Mini · v1.0.5
+
+<img src="../docs/assets/button-goblin.webp" width="220" height="220" alt="Button Goblin">
 
 [Download Mini ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/mini-v1.0.5/MiSTer_StreamDeck_Mini_v1_0_5.zip) · [Animated Mini guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/mini.html) · [15-key MK.2 build](../README.md)
 
