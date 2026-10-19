@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/mini-release.yml'
       - 'mini/**'
+      - 'docs/assets/**'
       - 'mk2/**'
       - 'build-inputs/**'
       - 'tools/apply_shortcut_layout.py'

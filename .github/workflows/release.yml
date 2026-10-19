@@ -7,6 +7,7 @@ on:
       - '.github/workflows/release.yml'
       - 'tools/**'
       - 'docs/index.html'
+      - 'docs/assets/**'
       - 'docs/editor/**'
 permissions:
   contents: write
@@ -30,6 +31,7 @@ jobs:
           tar -xzf /tmp/build-inputs.tar.gz -C package/MiSTer_StreamDeck_v1
           cp docs/index.html package/MiSTer_StreamDeck_v1/README_Guide_v1.html
           cp -a docs/editor package/MiSTer_StreamDeck_v1/Deck_Editor
+          cp -a docs/assets package/MiSTer_StreamDeck_v1/assets
       - name: Install image-converter test dependency
         run: |
           python3 -m venv /tmp/streamdeck-python
