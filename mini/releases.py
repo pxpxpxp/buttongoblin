@@ -4,7 +4,7 @@ import argparse
 
 MINI_VERSION = '1.0.5'
 DUAL_VERSION = '1.0.3'
-REPOSITORY = 'https://github.com/pxpxpxp/MiSTer_StreamDeck'
+REPOSITORY = 'https://github.com/pxpxpxp/buttongoblin'
 
 def bundle(device, version):
     return f'MiSTer_StreamDeck_{device}_v{version.replace(".", "_")}'

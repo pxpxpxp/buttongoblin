@@ -4,7 +4,7 @@
 
 Run a six-key Stream Deck Mini and a 15-key Stream Deck MK.2 together on one MiSTer. Both stay active, with independent pages, artwork and brightness. Update All is on the Mini's first page, physical key 4, and on the MK.2's first page, physical key 14.
 
-**[Download the combined ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/dual-v1.0.3/MiSTer_StreamDeck_Dual_v1_0_3.zip)** · [Mini guide](https://buttongoblin.monster/mini.html) · [15-key guide](https://buttongoblin.monster/)
+**[Download the combined ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.0.3/MiSTer_StreamDeck_Dual_v1_0_3.zip)** · [Mini guide](https://buttongoblin.monster/mini.html) · [15-key guide](https://buttongoblin.monster/)
 
 ## v1.0.3 · Mini Y / N page
 

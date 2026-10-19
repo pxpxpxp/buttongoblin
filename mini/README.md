@@ -2,7 +2,7 @@
 
 <img src="../docs/assets/button-goblin.webp" width="220" height="220" alt="Button Goblin">
 
-[Download Mini ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/mini-v1.0.5/MiSTer_StreamDeck_Mini_v1_0_5.zip) · [Animated Mini guide](https://buttongoblin.monster/mini.html) · [15-key MK.2 build](../README.md)
+[Download Mini ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/mini-v1.0.5/MiSTer_StreamDeck_Mini_v1_0_5.zip) · [Animated Mini guide](https://buttongoblin.monster/mini.html) · [15-key MK.2 build](../README.md)
 
 A six-key port of the existing native MiSTer launcher. **Update All is on the first page, physical key 4.** The Mini uses its own USB protocol and prepared 80×80 BMP animations. No image decoding happens on MiSTer.
 

@@ -8,20 +8,20 @@
 
 Turn an **Elgato Stream Deck MK.2** or **six-key Stream Deck Mini** into a dedicated MiSTer control panel. Launch cores and favorite games, navigate menus, adjust brightness, and run Update All from animated buttons. The launcher runs directly on MiSTer over USB.
 
-[![MK.2 build](https://github.com/pxpxpxp/MiSTer_StreamDeck/actions/workflows/release.yml/badge.svg)](https://github.com/pxpxpxp/MiSTer_StreamDeck/actions/workflows/release.yml)
-[![Mini and Dual build](https://github.com/pxpxpxp/MiSTer_StreamDeck/actions/workflows/mini-release.yml/badge.svg)](https://github.com/pxpxpxp/MiSTer_StreamDeck/actions/workflows/mini-release.yml)
+[![MK.2 build](https://github.com/pxpxpxp/buttongoblin/actions/workflows/release.yml/badge.svg)](https://github.com/pxpxpxp/buttongoblin/actions/workflows/release.yml)
+[![Mini and Dual build](https://github.com/pxpxpxp/buttongoblin/actions/workflows/mini-release.yml/badge.svg)](https://github.com/pxpxpxp/buttongoblin/actions/workflows/mini-release.yml)
 
-[15-key animated guide](https://buttongoblin.monster/) · [Mini animated guide](https://buttongoblin.monster/mini.html) · [MK.2 Deck Editor](https://buttongoblin.monster/editor/) · [All releases](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases)
+[15-key animated guide](https://buttongoblin.monster/) · [Mini animated guide](https://buttongoblin.monster/mini.html) · [MK.2 Deck Editor](https://buttongoblin.monster/editor/) · [All releases](https://github.com/pxpxpxp/buttongoblin/releases)
 
 ## Choose your setup
 
 | Your setup | Download | Run after copying |
 | --- | --- | --- |
-| **Mini + 15-key MK.2 together** | **[Dual v1.0.3 ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/dual-v1.0.3/MiSTer_StreamDeck_Dual_v1_0_3.zip)** | `StreamDeck_Both_Enable.sh` |
-| Six-key Mini | [Mini v1.0.5 ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/mini-v1.0.5/MiSTer_StreamDeck_Mini_v1_0_5.zip) | `StreamDeck_Mini_Enable.sh` |
-| 15-key MK.2 | [Current MK.2 in Dual v1.0.3](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/dual-v1.0.3/MiSTer_StreamDeck_Dual_v1_0_3.zip) | `StreamDeck_Enable.sh` |
+| **Mini + 15-key MK.2 together** | **[Dual v1.0.3 ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.0.3/MiSTer_StreamDeck_Dual_v1_0_3.zip)** | `StreamDeck_Both_Enable.sh` |
+| Six-key Mini | [Mini v1.0.5 ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/mini-v1.0.5/MiSTer_StreamDeck_Mini_v1_0_5.zip) | `StreamDeck_Mini_Enable.sh` |
+| 15-key MK.2 | [Current MK.2 in Dual v1.0.3](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.0.3/MiSTer_StreamDeck_Dual_v1_0_3.zip) | `StreamDeck_Enable.sh` |
 
-The Dual bundle also works with only the MK.2 enabled. The [earlier standalone MK.2 v1 ZIP](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/download/v1/MiSTer_StreamDeck_v1.zip) remains available.
+The Dual bundle also works with only the MK.2 enabled. The [earlier standalone MK.2 v1 ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/v1/MiSTer_StreamDeck_v1.zip) remains available.
 
 **Using both decks? Choose the Dual bundle.** It includes both binaries, independent configurations and service controls, and a shared lock to prevent duplicate Update All jobs from the two launchers.
 
@@ -162,4 +162,4 @@ Each release includes **LICENSE.txt** and **ARTWORK_CREDITS.txt** with the proje
 
 ---
 
-**[Download Dual](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/tag/dual-v1.0.3)** · **[Mini guide](https://buttongoblin.monster/mini.html)** · **[15-key guide](https://buttongoblin.monster/)** · **[MK.2 editor](https://buttongoblin.monster/editor/)**
+**[Download Dual](https://github.com/pxpxpxp/buttongoblin/releases/tag/dual-v1.0.3)** · **[Mini guide](https://buttongoblin.monster/mini.html)** · **[15-key guide](https://buttongoblin.monster/)** · **[MK.2 editor](https://buttongoblin.monster/editor/)**
