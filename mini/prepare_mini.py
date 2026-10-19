@@ -177,7 +177,7 @@ def prepare(base,output,docs=None):
         (icons/'startup'/f'{key:02d}.bmp').write_bytes(bitmap(boot.crop((x,y,x+80,y+80))))
     (app/'source/build.sh').write_text('#!/bin/sh\nset -eu\ncd "$(dirname "$0")/.."\nzig cc -target arm-linux-musleabihf -mcpu=cortex_a9 -static -O2 -s -Wall -Wextra -Werror source/buttongoblin.c -o buttongoblin-mister\n')
     diag=app/'extras/ButtonGoblin_Diagnostics.sh'
-    diag.write_text(diag.read_text().replace(f'MK.2 v{DUAL_VERSION}',f'Mini v{MINI_VERSION}').replace('"$k" -le 14','"$k" -le 5'))
+    diag.write_text(diag.read_text().replace('MK.2 v1.1.0',f'Mini v{MINI_VERSION}').replace(f'MK.2 v{DUAL_VERSION}',f'Mini v{MINI_VERSION}').replace('"$k" -le 14','"$k" -le 5'))
     text=diag.read_text()
     text=text.replace(" echo '\\nHID raw interfaces:'", """ echo '\\nUSB hub topology:'
  if command -v lsusb >/dev/null 2>&1; then lsusb -t 2>/dev/null || true; fi
@@ -195,7 +195,8 @@ def prepare(base,output,docs=None):
  echo '\\nHID raw interfaces:'""")
     diag.write_text(text)
     # Keep the Mini's installer, boot block and logs separate from the MK.2.
-    for path in list((output/'Scripts').rglob('*.sh')):
+    scripts=list(app.rglob('*.sh'))+[output/'Scripts'/f'ButtonGoblin_{operation}.sh' for operation in ['Enable','Disable']]
+    for path in scripts:
         text=path.read_text().replace('/Scripts/.config/buttongoblin','/Scripts/.config/buttongoblin-mini')
         text=text.replace('/tmp/buttongoblin','/tmp/buttongoblin_mini')
         text=text.replace('BUTTONGOBLIN-MK2','BUTTONGOBLIN-MINI').replace('ButtonGoblin_','ButtonGoblin_Mini_').replace('.buttongoblin-backup','.buttongoblin-mini-backup')

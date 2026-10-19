@@ -182,7 +182,7 @@ async function exportFiles(){
  }if(pageSize>4194304)throw Error(`Page ${p+1} exceeds the 4 MiB cache.`);
  files.push([root+PAGE_FILES[p],encoder.encode(lines.join('\n')+'\n')]);
  }
- files.push(['READ_ME.txt',encoder.encode('Button Goblin Mini v1.1.0 layout: all six page configurations and prepared 80x80 BMP/SMAN artwork. Install the Mini launcher separately. Wait for Update All to finish. Run Scripts/ButtonGoblin_Mini_Disable.sh, merge exported Scripts into /media/fat/Scripts (include hidden .config), then run Scripts/ButtonGoblin_Mini_Enable.sh. Keep the installed binary. Home button 4: Update All. Home button 5: brightness; hold one second for Navigation. Button 6: Next. Back: Home. Y/N go to the active screen, not background updater input. Save project JSON to preserve editable artwork.\n')]);return files;
+ files.push(['READ_ME.txt',encoder.encode('Button Goblin Mini v1.1.1 layout: all six page configurations and prepared 80x80 BMP/SMAN artwork. Install the Mini launcher separately. Wait for Update All to finish. Run Scripts/ButtonGoblin_Mini_Disable.sh, merge exported Scripts into /media/fat/Scripts (include hidden .config), then run Scripts/ButtonGoblin_Mini_Enable.sh. Keep the installed binary. Home button 4: Update All. Home button 5: brightness; hold one second for Navigation. Button 6: Next. Back: Home. Y/N go to the active screen, not background updater input. Save project JSON to preserve editable artwork.\n')]);return files;
 }
 function frameAt(k,state,now){const a=k.animations[state]||(!k.icons[state]?k.animations.normal:null);if(!a)return icon(k,state);let t=now%a.durations.reduce((s,d)=>s+d,0);for(let i=0;i<a.frames.length;i++){if(t<a.durations[i])return a.frames[i];t-=a.durations[i];}return a.frames[0];}
 $('page').onchange=()=>{activePage=Number($('page').value);selected=0;render();};
@@ -196,8 +196,8 @@ $('iconFile').onchange=async()=>{
  try{
  if(f.size>12000000||!['image/png','image/jpeg','image/webp','image/gif'].includes(f.type))throw Error('Choose PNG, JPG, WebP or GIF under 12 MB.');
  const k=key(),state=$('state').value;let result;
- if(f.type==='image/gif'){message('Preparing Mini animation…');result=await normaliseGif(await f.arrayBuffer(),$('addLabel').checked,k.label);miniAnimation(result.device,result.durations);k.animations[state]={frames:result.frames,durations:result.durations};k.icons[state]=result.frames[0];result.frames.forEach((frame,i)=>deviceCache.set(frame,result.device[i]));}
- else{const data=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(Error('Image could not be read.'));r.readAsDataURL(f);});const im=new Image();im.src=data;await im.decode();result=renderIcon(im,$('addLabel').checked,k.label);delete k.animations[state];k.icons[state]=result.normal;deviceCache.set(result.normal,result.device);}
+ if(f.type==='image/gif'){message('Preparing Mini animation…');result=await normaliseGif(await f.arrayBuffer(),$('addLabel').checked,k.label);miniAnimation(result.device,result.durations);k.animations[state]={frames:result.frames,durations:result.durations};k.icons[state]=result.frames[0];}
+ else{const data=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(Error('Image could not be read.'));r.readAsDataURL(f);});const im=new Image();im.src=data;await im.decode();result=renderIcon(im,$('addLabel').checked,k.label);delete k.animations[state];k.icons[state]=result.normal;}
  message('Mini artwork assigned.');
  }catch(e){message(e.message,true);}finally{$('iconFile').value='';busy(false);}
 };

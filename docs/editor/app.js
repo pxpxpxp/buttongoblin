@@ -116,7 +116,7 @@ function validate(p) {
         if (!k || !clean(k.label, 95, false) || !clean(k.target, 1000) || !ACTIONS.includes(k.action) || !['press', 'release', 'hold'].includes(k.trigger) || !Number.isInteger(k.hold) || k.hold < 100 || k.hold > 10000) throw Error(`Check the label, path and trigger on key ${i}.`);
         if (k.action === 'launch' && !/\.(rbf|mgl|mra)$/i.test(k.target)) throw Error(`Key ${i} needs a .rbf, .mgl or .mra path.`);
         if (['script', 'update_all'].includes(k.action) && !/\.sh$/i.test(k.target)) throw Error(`Key ${i} needs a .sh script path.`);
-        if (!k.icons || Object.keys(k.icons).some(s => !STATES.includes(s)) || Object.values(k.icons).some(x => typeof x !== 'string' || !/^data:image\/jpeg;base64,[A-Za-z0-9+/]+=*$/.test(x) || x.length > 45000)) throw Error(`Invalid icon on key ${i}.`);
+        if (!k.icons || Object.keys(k.icons).some(s => !STATES.includes(s)) || Object.values(k.icons).some(x => typeof x !== 'string' || !/^data:image\/(?:jpeg|png);base64,[A-Za-z0-9+/]+=*$/.test(x) || x.length > 45000)) throw Error(`Invalid icon on key ${i}.`);
     });
     validateAnimations(p);
     return p;
@@ -248,7 +248,7 @@ function exportFiles(){
  const view=project,page=activePage;const files=[];
  try{for(let i=0;i<2;i++){activePage=i;project=pageProjects[i];files.push(...exportPageFiles());}}finally{project=view;activePage=page;}
  const unique=new Map();for(const [name,data] of files){if(!unique.has(name))unique.set(name,data);}
- unique.set('READ_ME.txt',new TextEncoder().encode('Requires Button Goblin v1.1.0. Both page configurations and artwork are included. Extract into /media/fat, including hidden Scripts/.config, and run ButtonGoblin_Enable.sh after any updater finishes. Tap button 15 for brightness; hold one second for page two. Back returns to consoles. Keep your launcher binary; this export contains only configuration/artwork. Save project JSON to preserve both editable pages.\n'));
+ unique.set('READ_ME.txt',new TextEncoder().encode('Requires Button Goblin v1.1.1. Both page configurations and artwork are included. Extract into /media/fat, including hidden Scripts/.config, and run ButtonGoblin_Enable.sh after any updater finishes. Tap button 15 for brightness; hold one second for page two. Back returns to consoles. Keep your launcher binary; this export contains only configuration/artwork. Save project JSON to preserve both editable pages.\n'));
  return [...unique];
 }
 
@@ -577,9 +577,9 @@ function validateAnimations(p) {
             if (a.durations.some(d => !Number.isInteger(d) || d < 200 || d > 30000) || a.durations.reduce((n, d) => n + d, 0) > 30000) throw Error('Animation timings must be 200–30000 ms with a loop of at most 30 seconds.');
             let size = 8;
             for (const frame of a.frames) {
-                if (typeof frame !== 'string' || !/^data:image\/jpeg;base64,[A-Za-z0-9+/]+=*$/.test(frame) || frame.length > 43715) throw Error('Invalid animation JPEG.');
+                if (typeof frame !== 'string' || !/^data:image\/(?:jpeg|png);base64,[A-Za-z0-9+/]+=*$/.test(frame) || frame.length > 43715) throw Error('Invalid animation preview.');
                 const length = bytes(frame).length;
-                if (length > 32768) throw Error('Invalid animation JPEG.');
+                if (length > 32768) throw Error('Invalid animation preview.');
                 size += 8 + length;
             }
             if (size > 524288) throw Error('Animation exceeds 512 KiB.');

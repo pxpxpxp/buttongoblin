@@ -2,9 +2,38 @@
 #include "buttongoblin-mk2.c"
 #undef main
 #include <assert.h>
+
+/* Duplicate mappings share one virtual key until the last armed button releases. */
+static void duplicate_shortcut_tests(void) {
+  cfg=newconfig();assert(cfg);active_page=0;reset_usb_state();
+  cfg->keys[0].action=cfg->keys[1].action=UP_BUTTON;
+  int fds[2];assert(!pipe(fds));keyboard_fd=fds[1];
+  assert(fcntl(fds[0],F_SETFL,O_NONBLOCK)==0);
+  struct input_event ev[2];uint8_t state[KEYS]={0};
+  state[0]=1;handle_input(state,1,NULL);
+  assert(read(fds[0],ev,sizeof ev)==sizeof ev&&ev[0].value==1);
+  state[1]=1;handle_input(state,2,NULL);assert(read(fds[0],ev,sizeof ev)<0&&errno==EAGAIN);
+  state[0]=0;handle_input(state,3,NULL);
+  assert(read(fds[0],ev,sizeof ev)<0&&errno==EAGAIN);
+  assert(control_down[UP_BUTTON-SPACE_BUTTON]&&uploads[0].wanted==0&&uploads[1].wanted==1);
+  state[0]=1;state[1]=0;handle_input(state,4,NULL);
+  assert(read(fds[0],ev,sizeof ev)<0&&errno==EAGAIN);
+  state[0]=0;handle_input(state,5,NULL);
+  assert(read(fds[0],ev,sizeof ev)==sizeof ev&&ev[0].value==0);
+  /* A button suppressed after reconnect must not hold the virtual key down. */
+  state[1]=1;inputs.down[1]=1;inputs.armed[1]=0;
+  state[0]=1;handle_input(state,6,NULL);
+  assert(read(fds[0],ev,sizeof ev)==sizeof ev&&ev[0].value==1);
+  state[0]=0;handle_input(state,7,NULL);
+  assert(read(fds[0],ev,sizeof ev)==sizeof ev&&ev[0].value==0);
+  keyboard_close();close(fds[0]);freeconfig(cfg);cfg=NULL;
+  puts("PASS: duplicate shortcut holds, same-report handoff and reconnect suppression");
+}
+
 static int events;
 static void capture(int k,double now){assert(k==14);(void)now;events++;}
 int main(void){
+  duplicate_shortcut_tests();
   page_configs[0]=newconfig();page_configs[1]=newconfig();cfg=page_configs[0];
   for(int k=0;k<15;k++)page_configs[1]->keys[k].action=NONE;
   page_configs[1]->keys[14].action=BACK_PAGE;
@@ -65,6 +94,15 @@ int main(void){
     advance_animations(10+k*.1);
   }
   assert(!upload_pending());
+  /* A held key during the splash is never a fresh press after it ends. */
+  switch_page(0);page_transition=0;reset_usb_state();memset(state,0,sizeof state);
+  startup_stage=3;state[14]=1;handle_device_input(state,20,capture);
+  assert(inputs.down[14]&&!inputs.armed[14]);
+  reset_after_reload();startup_stage=0;
+  int before=events;handle_device_input(state,21,capture);assert(events==before);
+  state[14]=0;handle_device_input(state,21.1,capture);assert(events==before);
+  state[14]=1;handle_device_input(state,22,capture);
+  state[14]=0;handle_device_input(state,22.1,capture);assert(events==before+1);
   freeconfig(page_configs[0]);freeconfig(page_configs[1]);cfg=NULL;page_configs[0]=page_configs[1]=NULL;
   puts("PASS: brightness tap, timed hold, late release, held-key suppression, Back, queue cancellation, retained hidden updater completion");
 }

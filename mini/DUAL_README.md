@@ -1,14 +1,14 @@
-# Button Goblin · Dual v1.1.0
+# Button Goblin · Dual v1.1.1
 
 <img src="../docs/assets/button-goblin.webp" width="220" height="220" alt="Button Goblin">
 
 Run a six-key Stream Deck Mini and a 15-key Stream Deck MK.2 together on one MiSTer. Both stay active, with independent pages, artwork and brightness. Update All is on the Mini's first page, physical key 4, and on the MK.2's first page, physical key 14.
 
-**[Download the combined ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.1.0/ButtonGoblin_Dual_v1_1_0.zip)** · [Mini guide](https://buttongoblin.monster/mini.html) · [15-key guide](https://buttongoblin.monster/)
+**[Download the combined ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.1.1/ButtonGoblin_Dual_v1_1_1.zip)** · [Mini guide](https://buttongoblin.monster/mini.html) · [15-key guide](https://buttongoblin.monster/)
 
 ## Install both
 
-1. Download and extract **ButtonGoblin_Dual_v1_1_0.zip**.
+1. Download and extract **ButtonGoblin_Dual_v1_1_1.zip**.
 2. Copy its complete **Scripts contents**, including hidden **.config**, into `/media/fat/Scripts/`.
 3. Connect both decks to MiSTer’s USB host hub.
 4. Run **ButtonGoblin_Both_Enable.sh** from MiSTer’s Scripts menu. Both services start immediately and at boot.

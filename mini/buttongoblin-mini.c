@@ -22,7 +22,7 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
-#define VERSION "Button Goblin Mini 1.1.0"
+#define VERSION "Button Goblin Mini 1.1.1"
 #define KEYS 6
 #define PAGES 6
 #define NAV_PAGE 3
@@ -1018,7 +1018,12 @@ static void handle_input(const uint8_t states[KEYS], double now,
     }
     if (action>=SPACE_BUTTON && action<=N_BUTTON) {
       if (pressed || released) {
-        int rc=control_change(action,states[k]);
+        /* Multiple physical buttons may map to the same virtual key.
+           Use this complete report, not the previously processed key order. */
+        int down=0;
+        for(int j=0;j<KEYS;j++)
+          if(inputs.armed[j]&&states[j]&&cfg->keys[j].action==action)down=1;
+        int rc=control_change(action,down);
         visual(k,rc?2:(states[k]?1:0),now);
         if (!rc) restore[k]=0;
       }

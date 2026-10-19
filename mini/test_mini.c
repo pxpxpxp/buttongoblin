@@ -4,6 +4,34 @@
 #include <assert.h>
 #include <sys/socket.h>
 
+
+/* Duplicate mappings share one virtual key until the last armed button releases. */
+static void duplicate_shortcut_tests(void) {
+  cfg=newconfig();assert(cfg);active_page=0;reset_usb_state();
+  cfg->keys[0].action=cfg->keys[1].action=UP_BUTTON;
+  int fds[2];assert(!pipe(fds));keyboard_fd=fds[1];
+  assert(fcntl(fds[0],F_SETFL,O_NONBLOCK)==0);
+  struct input_event ev[2];uint8_t state[KEYS]={0};
+  state[0]=1;handle_input(state,1,NULL);
+  assert(read(fds[0],ev,sizeof ev)==sizeof ev&&ev[0].value==1);
+  state[1]=1;handle_input(state,2,NULL);assert(read(fds[0],ev,sizeof ev)<0&&errno==EAGAIN);
+  state[0]=0;handle_input(state,3,NULL);
+  assert(read(fds[0],ev,sizeof ev)<0&&errno==EAGAIN);
+  assert(control_down[UP_BUTTON-SPACE_BUTTON]&&uploads[0].wanted==0&&uploads[1].wanted==1);
+  state[0]=1;state[1]=0;handle_input(state,4,NULL);
+  assert(read(fds[0],ev,sizeof ev)<0&&errno==EAGAIN);
+  state[0]=0;handle_input(state,5,NULL);
+  assert(read(fds[0],ev,sizeof ev)==sizeof ev&&ev[0].value==0);
+  /* A button suppressed after reconnect must not hold the virtual key down. */
+  state[1]=1;inputs.down[1]=1;inputs.armed[1]=0;
+  state[0]=1;handle_input(state,6,NULL);
+  assert(read(fds[0],ev,sizeof ev)==sizeof ev&&ev[0].value==1);
+  state[0]=0;handle_input(state,7,NULL);
+  assert(read(fds[0],ev,sizeof ev)==sizeof ev&&ev[0].value==0);
+  keyboard_close();close(fds[0]);freeconfig(cfg);cfg=NULL;
+  puts("PASS: duplicate shortcut holds, same-report handoff and reconnect suppression");
+}
+
 static int fired;
 static void capture(int key,double now){(void)now;assert(key==4);fired++;}
 static void arm_inputs(void){memset(&inputs,0,sizeof inputs);memset(inputs.armed,1,sizeof inputs.armed);}
@@ -271,4 +299,4 @@ static void script_tests(void){
   puts("PASS: real script guardian, closed output, success/failure, timeout and reconnect feedback");
 }
 
-int main(int argc,char **argv){protocol_tests();input_reader_tests();transition_tests();page_tests();confirmation_tests();script_tests();if(argc>1)package_tests(argv[1]);return 0;}
+int main(int argc,char **argv){duplicate_shortcut_tests();protocol_tests();input_reader_tests();transition_tests();page_tests();confirmation_tests();script_tests();if(argc>1)package_tests(argv[1]);return 0;}

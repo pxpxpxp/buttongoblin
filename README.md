@@ -16,9 +16,9 @@ Turn an **Elgato Stream Deck MK.2** or **six-key Stream Deck Mini** into a dedic
 
 | Your setup | Download | Run after copying |
 | --- | --- | --- |
-| **Mini + 15-key MK.2 together** | **[Dual v1.1.0 ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.1.0/ButtonGoblin_Dual_v1_1_0.zip)** | `ButtonGoblin_Both_Enable.sh` |
-| Six-key Mini | [Mini v1.1.0 ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/mini-v1.1.0/ButtonGoblin_Mini_v1_1_0.zip) | `ButtonGoblin_Mini_Enable.sh` |
-| 15-key MK.2 | [Current MK.2 in Dual v1.1.0](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.1.0/ButtonGoblin_Dual_v1_1_0.zip) | `ButtonGoblin_Enable.sh` |
+| **Mini + 15-key MK.2 together** | **[Dual v1.1.1 ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.1.1/ButtonGoblin_Dual_v1_1_1.zip)** | `ButtonGoblin_Both_Enable.sh` |
+| Six-key Mini | [Mini v1.1.1 ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/mini-v1.1.1/ButtonGoblin_Mini_v1_1_1.zip) | `ButtonGoblin_Mini_Enable.sh` |
+| 15-key MK.2 | [Current MK.2 in Dual v1.1.1](https://github.com/pxpxpxp/buttongoblin/releases/download/dual-v1.1.1/ButtonGoblin_Dual_v1_1_1.zip) | `ButtonGoblin_Enable.sh` |
 
 The Dual bundle also works with only the MK.2 enabled.
 
@@ -158,4 +158,4 @@ Each release includes **LICENSE.txt** and **ARTWORK_CREDITS.txt** with the proje
 
 ---
 
-**[Download Dual](https://github.com/pxpxpxp/buttongoblin/releases/tag/dual-v1.1.0)** · **[Mini guide](https://buttongoblin.monster/mini.html)** · **[15-key guide](https://buttongoblin.monster/)** · **[MK.2 editor](https://buttongoblin.monster/editor/)**
+**[Download Dual](https://github.com/pxpxpxp/buttongoblin/releases/tag/dual-v1.1.1)** · **[Mini guide](https://buttongoblin.monster/mini.html)** · **[15-key guide](https://buttongoblin.monster/)** · **[MK.2 editor](https://buttongoblin.monster/editor/)**

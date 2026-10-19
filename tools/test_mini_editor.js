@@ -29,6 +29,15 @@ const run=s=>vm.runInContext(s,context);
  run('project=defaults();activePage=selected=0;render()');
  // Round trip all six pages, including artwork and Y/N actions.
  const saved=run('JSON.stringify(project)');el('projectFile').files=[{size:saved.length,text:async()=>saved}];await el('projectFile').onchange();assert.equal(run('project.pages[5].keys[1].action'),'n');assert.equal(el('status').textContent,'All six Mini pages opened.');
+ // Replacing uploads must not retain discarded BMP frames in the derived cache.
+ context.FileReader=class {readAsDataURL(f){this.result=f.data;this.onload();}};
+ run('deviceCache.clear()');
+ for(const color of ['red','green','blue']){
+ const canvas=createCanvas(80,80),ctx=canvas.getContext('2d');ctx.fillStyle=color;ctx.fillRect(0,0,80,80);
+ el('iconFile').files=[{size:100,type:'image/png',data:canvas.toDataURL('image/png')}];await el('iconFile').onchange();
+ assert.equal(run('deviceCache.size'),0,'Discarded upload BMPs are not retained');
+ }
+ run('project=defaults();activePage=selected=0;render()');
  const files=await run('exportFiles()');const out=process.argv[2]||'/tmp/buttongoblin-mini-editor-test';fs.mkdirSync(out,{recursive:true});
  for(const [name,data] of files){const path=require('node:path').join(out,name);fs.mkdirSync(require('node:path').dirname(path),{recursive:true});fs.writeFileSync(path,data);}
  fs.writeFileSync(out+'/layout.zip',Buffer.from(await (await run('(async()=>zip(await exportFiles()))()')).arrayBuffer()));

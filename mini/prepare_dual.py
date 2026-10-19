@@ -7,6 +7,8 @@ def prepare(base,mini,output):
     shutil.copytree(base/'Scripts',output/'Scripts',dirs_exist_ok=True)
     shutil.copytree(mini/'Scripts',output/'Scripts',dirs_exist_ok=True)
     app=output/'Scripts/.config/buttongoblin'
+    diag=app/'extras/ButtonGoblin_Diagnostics.sh'
+    diag.write_text(diag.read_text().replace('MK.2 v1.1.0',f'MK.2 v{DUAL_VERSION}'))
     native=Path(__file__).resolve().parent.parent/'mk2'
     shutil.copy2(native/'buttongoblin-mk2.c',app/'source/buttongoblin.c')
     for name in ['test_pages.c','test_internal.c']:
