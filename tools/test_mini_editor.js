@@ -22,6 +22,12 @@ const run=s=>vm.runInContext(s,context);
  // Page selection, target editing and safe fixed triggers.
  el('page').value='5';el('page').onchange();assert.equal(run('activePage'),5);assert.equal(run('key().action'),'y');assert.equal(el('trigger').disabled,true);
  el('action').value='next';el('action').onchange();assert.equal(run('key().trigger'),'release');run('project=defaults();activePage=selected=0;render()');
+ // Every console preset maps by page/key, independent of display label spelling.
+ const locations=[[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[1,3],[1,4],[2,0],[2,1],[2,2],[2,3],[2,4],[0,4]];
+ for(let i=0;i<locations.length;i++){
+ run(`applyPreset(${i})`);const [p,k]=locations[i];assert.equal(run('key().icons.normal'),run(`defaults().pages[${p}].keys[${k}].icons.normal`));
+ }
+ run('project=defaults();activePage=selected=0;render()');
  // Import is transactional: invalid dimensions must preserve existing edits.
  context.badFrame=createCanvas(1,1).toDataURL('image/png');run("project.pages[0].keys[0].label='Keep my edits'");
  const invalid=JSON.parse(run('JSON.stringify(project)'));invalid.pages[0].keys[0].icons.normal=context.badFrame;invalid.pages[0].keys[0].animations={};

@@ -11,3 +11,4 @@ Packages include native ARM binaries, prepared artwork, configuration files, gui
 
 
 Review fixes in v1.1.1: duplicate shortcut buttons retain the shared virtual key until the last release; MK.2 tracks held inputs during startup; Mini editor releases discarded upload frames; repeated Mini packaging preserves service names. MK.2 editor now accepts its built-in PNG previews and exports both pages. Both editor exports are checked by native launchers in CI.
+Mini console presets use explicit page/key positions, so every preset works regardless of its display label.

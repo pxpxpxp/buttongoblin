@@ -202,7 +202,12 @@ $('iconFile').onchange=async()=>{
  }catch(e){message(e.message,true);}finally{$('iconFile').value='';busy(false);}
 };
 $('restoreIcon').onclick=()=>{const original=defaults().pages[activePage].keys[selected],state=$('state').value;delete key().icons[state];delete key().animations[state];if(original.icons[state]){key().icons[state]=original.icons[state];key().animations[state]=original.animations[state];}render();message('Default artwork restored.');};
-function applyPreset(index){const originals=defaults().pages.flatMap(p=>p.keys);const names=['NES','SNES','Genesis','TG16','PlayStation','Saturn','N64','MegaCD','GBA','GameBoy','MasterSystem','NeoGeo','Simpsons','Brightness'];const source=originals.find(k=>k.label===names[index]);if(!source)return;key().icons.normal=source.icons.normal;key().animations.normal=source.animations.normal;render();message('Animation preset assigned.');}
+function applyPreset(index){
+ const locations=[[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[1,3],[1,4],[2,0],[2,1],[2,2],[2,3],[2,4],[0,4]];
+ if(!Number.isInteger(index)||index<0||index>=locations.length)return;
+ const [p,k]=locations[index],source=defaults().pages[p].keys[k];
+ key().icons.normal=source.icons.normal;key().animations.normal=source.animations.normal;render();message('Animation preset assigned.');
+}
 $('consolePreset').onclick=()=>applyPreset(Number($('consoleChoice').value));$('marioPreset').onclick=()=>applyPreset(0);
 $('export').onclick=async()=>{busy(true);try{message('Preparing all six pages…');download(zip(await exportFiles()),'ButtonGoblin_Mini_Layout.zip');message('Mini layout downloaded. Disable Mini, copy exported Scripts, then enable Mini.');}catch(e){message(e.message,true);}finally{deviceCache.clear();busy(false);}};
 $('save').onclick=()=>{try{validate(project);download(new Blob([JSON.stringify(project)],{type:'application/json'}),'ButtonGoblin_Mini_Project.json');message('All six Mini pages saved.');}catch(e){message(e.message,true);}};

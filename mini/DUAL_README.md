@@ -30,7 +30,7 @@ The combined ZIP includes both Button Goblin native ARM binaries and independent
 - Install Update All separately at `/media/fat/Scripts/update_all.sh`. Game, core and BIOS files also remain separate installs.
 - Each visible page animates. Two decks add USB traffic and power demand; physical coexistence, hub power and controller responsiveness still need checking on your setup.
 
-The web editor targets the MK.2 only. Edit Mini configurations in its separate folder. The Mini uses BMP animation frames, while the MK.2 uses JPEG frames; do not mix exports.
+Use the [MK.2 editor](https://buttongoblin.monster/editor/) or the [Mini editor](https://buttongoblin.monster/editor/mini.html) for the matching device. Both support saved projects, animated artwork and configuration exports. The Mini uses BMP animation frames, while the MK.2 uses JPEG frames; do not mix exports.
 
 ## Checks and diagnostics
 
