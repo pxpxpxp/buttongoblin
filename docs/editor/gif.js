@@ -222,11 +222,12 @@ function decodeGif(buffer, frameTransform = null) {
 }
 // Sampling keeps runtime frames bounded. The original GIF never reaches MiSTer.
 async function normaliseGif(buffer, addLabel, label) {
-    // Composite at source resolution for correct disposal; retain only 72x72
+    const outputSize = typeof ICON_SIZE === "undefined" ? 72 : ICON_SIZE;
+    // Composite at source resolution for correct disposal; retain only device-size
     // snapshots. A 1024px source no longer retains megabytes per frame.
     const sourceCanvas = document.createElement('canvas'),
         snapshotCanvas = document.createElement('canvas');
-    snapshotCanvas.width = snapshotCanvas.height = 72;
+    snapshotCanvas.width = snapshotCanvas.height = outputSize;
     const sourceContext = sourceCanvas.getContext('2d'),
         snapshotContext = snapshotCanvas.getContext('2d');
     snapshotContext.imageSmoothingEnabled = false;
@@ -236,11 +237,11 @@ async function normaliseGif(buffer, addLabel, label) {
         const frame = sourceContext.createImageData(width, height);
         frame.data.set(rgba);
         sourceContext.putImageData(frame, 0, 0);
-        snapshotContext.clearRect(0, 0, 72, 72);
+        snapshotContext.clearRect(0, 0, outputSize, outputSize);
         const size = Math.min(width, height);
         snapshotContext.drawImage(sourceCanvas, (width-size)/2, (height-size)/2,
-                                  size, size, 0, 0, 72, 72);
-        return snapshotContext.getImageData(0, 0, 72, 72).data;
+                                  size, size, 0, 0, outputSize, outputSize);
+        return snapshotContext.getImageData(0, 0, outputSize, outputSize).data;
     }),
         step = Math.max(200, Math.ceil(gif.total / 32)),
         selected = [];
@@ -264,10 +265,10 @@ async function normaliseGif(buffer, addLabel, label) {
         device = [],
         durations = [];
     const c = document.createElement('canvas');
-    c.width = c.height = 72;
+    c.width = c.height = outputSize;
     const ctx = c.getContext('2d');
     for (const f of selected) {
-        const image = ctx.createImageData(72, 72);
+        const image = ctx.createImageData(outputSize, outputSize);
         image.data.set(gif.frames[f.source].rgba);
         ctx.putImageData(image, 0, 0);
         const icon = renderIcon(c, addLabel, label, true);

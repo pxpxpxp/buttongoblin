@@ -9,6 +9,8 @@ on:
       - 'docs/assets/**'
       - 'docs/index.html'
       - 'docs/editor/**'
+      - 'tools/build_mini_editor.py'
+      - 'tools/test_mini_editor.js'
       - 'mk2/**'
       - 'build-inputs/**'
       - 'tools/apply_shortcut_layout.py'
@@ -77,6 +79,23 @@ jobs:
           python3 mini/test_dual.py package/$DUAL_BUNDLE /tmp/mini-host /tmp/mk2-host
           python3 mini/test_branding.py package/$MINI_BUNDLE package/$DUAL_BUNDLE
           node --check docs/editor/app.js
+          node --check docs/editor/mini-app.js
+          node --check docs/editor/gif.js
+      - name: Test Mini editor exports against the native launcher
+        run: |
+          set -eu
+          python3 tools/build_mini_editor.py package/$MINI_BUNDLE/Scripts/.config/buttongoblin-mini docs/editor/mini-defaults.js --check
+          npm install --prefix /tmp/mini-editor-test --no-audit --no-fund @napi-rs/canvas@0.1.80
+          NODE_PATH=/tmp/mini-editor-test/node_modules node tools/test_mini_editor.js /tmp/mini-editor-export
+          python3 - <<'PYTEST'
+          import subprocess, zipfile
+          from pathlib import Path
+          app=Path('/tmp/mini-editor-export/Scripts/.config/buttongoblin-mini')
+          for config in app.glob('*.conf'):
+              subprocess.run(['/tmp/mini-host','--config',str(config),'--assets',str(app/'icons'),'--validate'],check=True)
+          with zipfile.ZipFile('/tmp/mini-editor-export/layout.zip') as archive:
+              assert archive.testzip() is None
+          PYTEST
       - name: Install pinned Zig compiler
         run: |
           set -eu

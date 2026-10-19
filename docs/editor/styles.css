@@ -427,3 +427,5 @@ a {
 
 .goblin-mark{display:block;width:84px;height:84px;object-fit:contain;image-rendering:pixelated;border-radius:14px}
 @media(max-width:650px){.goblin-mark{width:60px;height:60px}}
+
+.mini-editor .deck { grid-template-columns:repeat(3,minmax(0,1fr)); max-width:500px; margin:auto; }

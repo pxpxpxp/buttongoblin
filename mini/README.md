@@ -53,7 +53,7 @@ The runtime remains under `/media/fat/Scripts/.config/buttongoblin-mini/`. The M
 
 The six files are `buttons.conf`, `buttons-page2.conf`, `buttons-page3.conf`, `buttons-navigation.conf`, `buttons-shortcuts.conf`, and `buttons-confirm.conf`. Within each page, `key.0` is physical button 1 and `key.5` is button 6. The letter actions are `y` and `n`; they send keyboard presses/releases to the active MiSTer screen and do not supply stdin to background Update All. The additional actions are `next` (cycle pages) and `back` (Home).
 
-**Do not export Mini configurations from the 15-key web editor.** It produces MK.2 layouts and JPEG animations. Edit the Mini configuration files directly for this release; keep a Next or Back action available.
+Use the [Mini Editor](https://buttongoblin.monster/editor/mini.html) for all six pages, actions, static artwork and animated GIF uploads. It exports Mini-ready 80×80 BMP/SMAN files and all six configurations. Save/open Mini project JSON to preserve edits. The 15-key MK.2 editor has its own separate export format. Wait for Update All to finish, disable Mini, copy the exported `Scripts` contents including hidden `.config` onto `/media/fat/Scripts/`, then enable Mini. The installed launcher binary is retained.
 
 Prepared `.sma` files contain Mini BMP frames. They are not compatible with MK.2 `.sda` files. Original 72×72 character art is centered inside an 80×80 canvas, preserving the existing pixel geometry. Playback uses at least 350 ms per frame to limit USB traffic; slow uploads naturally reduce the frame rate without accumulating frames.
 

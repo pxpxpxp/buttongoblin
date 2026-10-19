@@ -10,7 +10,7 @@ Turn an **Elgato Stream Deck MK.2** or **six-key Stream Deck Mini** into a dedic
 
 [![Mini and Dual build](https://github.com/pxpxpxp/buttongoblin/actions/workflows/mini-release.yml/badge.svg)](https://github.com/pxpxpxp/buttongoblin/actions/workflows/mini-release.yml)
 
-[15-key animated guide](https://buttongoblin.monster/) · [Mini animated guide](https://buttongoblin.monster/mini.html) · [MK.2 Deck Editor](https://buttongoblin.monster/editor/) · [All releases](https://github.com/pxpxpxp/buttongoblin/releases)
+[15-key animated guide](https://buttongoblin.monster/) · [Mini animated guide](https://buttongoblin.monster/mini.html) · [MK.2 Deck Editor](https://buttongoblin.monster/editor/) · [Mini Editor](https://buttongoblin.monster/editor/mini.html) · [All releases](https://github.com/pxpxpxp/buttongoblin/releases)
 
 ## Choose your setup
 
@@ -106,7 +106,7 @@ Release held buttons before using a new page. Update All feedback remains associ
 
 **MK.2:** use the [Deck Editor](https://buttongoblin.monster/editor/) on your computer. Assign actions, paths, and artwork; save an editable project; then export for MiSTer. Disable the MK.2 service before copying the export and enable it afterward. The standalone MK.2 ZIP also includes an offline editor.
 
-**Mini:** edit the six configuration files in `Scripts/.config/buttongoblin-mini/`. Keep a Next or Back action available. The current web editor targets the 15-key MK.2; its exports do not fit the Mini.
+**Mini:** use the [Mini Editor](https://buttongoblin.monster/editor/mini.html) to edit all six pages, assign actions and animated artwork, and export Mini-ready BMP animations. Update All stays on Home button 4; button 6 advances through the pages. Save a Mini project JSON to keep your edits. Wait for Update All to finish, disable Mini, copy the export’s complete `Scripts` contents (including hidden `.config`) into `/media/fat/Scripts/`, then enable Mini. The export contains configurations and artwork; install the Mini launcher separately.
 
 Configuration indices start at zero: `key.0` means physical button 1. Labels are metadata; visible lettering is part of the artwork.
 

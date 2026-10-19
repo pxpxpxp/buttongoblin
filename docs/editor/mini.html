@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>
+      Button Goblin · Mini Editor
+    </title>
+<link rel="canonical" href="https://buttongoblin.monster/editor/mini.html">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23181c21'/%3E%3Cpath d='M8 8h6v6H8zm10 0h6v6h-6zM8 18h6v6H8zm10 0h6v6h-6z' fill='%237af0c7'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="mini-editor">
+    <header>
+      <div class="brand">
+        <a href="https://buttongoblin.monster/" aria-label="Button Goblin guide"><img class="goblin-mark" src="../assets/button-goblin.webp" width="84" height="84" alt="Button Goblin"></a>
+        <div>
+          <b>
+            Button Goblin Mini Editor
+          </b>
+          <div class="muted small">
+            Stream Deck Mini · 6 keys · 6 pages
+          </div>
+        </div>
+      </div>
+      <span class="badge">
+        <a href="https://buttongoblin.monster/editor/">15-key MK.2 editor →</a>
+      </span>
+    </header>
+    <main>
+      <div class="intro">
+        <h1>
+          Make every key yours.
+        </h1>
+        <p>
+          Choose a page and button. Assign artwork, a launch action, or a keyboard shortcut.
+        </p>
+      </div>
+      <div class="toolbar"><label for="page">Page</label><select id="page"><option value="0">1 · Home</option><option value="1">2 · Consoles II</option><option value="2">3 · Consoles III</option><option value="3">4 · Navigation</option><option value="4">5 · Shortcuts</option><option value="5">6 · Y / N</option></select>
+        <button class="btn primary" id="export">
+          Export for MiSTer ↓
+        </button>
+        <button class="btn" id="save">
+          Save project
+        </button>
+        <button class="btn" id="import">
+          Open project
+        </button>
+        <button class="btn" id="reset">
+          Reset layout
+        </button>
+        <input type="file" id="projectFile" accept=".json,application/json" hidden>
+      </div>
+      <p id="pageHelp" class="muted"></p><div class="layout">
+        <section class="panel" aria-label="Deck preview">
+          <div class="panel-title">
+            <h2>
+              Your deck
+            </h2>
+            <span class="muted small">
+              Click a key to edit
+            </span>
+          </div>
+          <div class="deck" id="deck">
+          </div>
+          <div class="deck-caption">
+            <span>
+              Front view · buttons 1–6 (config keys 0–5)
+            </span>
+            <span id="assigned">
+            </span>
+          </div>
+          <div class="mapping">
+            <strong id="summaryLabel">
+            </strong>
+            <code id="summaryPath">
+            </code>
+            <p class="help" id="summaryTrigger">
+            </p>
+          </div>
+          <div class="settings">
+            <h2>
+              Deck settings
+            </h2>
+            <div class="row">
+              <div class="field">
+                <label for="brightness">
+                  Brightness
+                  <span id="brightnessValue">
+                    65%
+                  </span>
+                </label>
+                <input id="brightness" type="range" min="0" max="100" value="65">
+              </div>
+              <div class="field">
+                <label for="gap">
+                  Launch cooldown (ms)
+                </label>
+                <input id="gap" type="number" min="100" max="30000" step="100" value="3000">
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="panel" aria-label="Key settings">
+          <div class="panel-title">
+            <h2 id="keyTitle">
+              Key 0
+            </h2>
+            <span class="muted small" id="position">
+              Top row · 1
+            </span>
+          </div>
+          <div class="field">
+            <label for="label">
+              Button label
+            </label>
+            <input id="label" maxlength="95" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="action">
+              Action
+            </label>
+            <select id="action">
+              <option value="launch">
+                Launch core / game
+              </option>
+              <option value="script">
+                Run shell script
+              </option>
+              <option value="update_all">Update All</option><option value="cycle">Increase brightness (5 levels)</option><option value="dim">
+                Dim brightness
+              </option>
+              <option value="bright">
+                Increase brightness
+              </option>
+              <option value="reload">
+                Reload configuration
+              </option>
+              <option value="restart">
+                Restart launcher
+              </option>
+              <option value="space">Space bar</option><option value="menu">Menu (F12)</option><option value="enter">Enter</option><option value="up">Up arrow</option><option value="down">Down arrow</option><option value="left">Left arrow</option><option value="right">Right arrow</option><option value="escape">Escape</option><option value="y">Y</option><option value="n">N</option><option value="next">Next page</option><option value="back">Back to Home</option><option value="none">
+                No action
+              </option>
+            </select>
+          </div>
+          <div class="field" id="targetField">
+            <label for="target" id="targetLabel">
+              Core or game path
+            </label>
+            <input id="target" maxlength="1000" spellcheck="false" autocomplete="off">
+            <p class="help" id="targetHelp">
+            </p>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="trigger">
+                Trigger
+              </label>
+              <select id="trigger">
+                <option value="press">
+                  On press
+                </option>
+                <option value="release">
+                  On release
+                </option>
+                <option value="hold">
+                  On hold
+                </option>
+              </select>
+            </div>
+            <div class="field" id="holdField">
+              <label for="hold">
+                Hold duration (ms)
+              </label>
+              <input id="hold" type="number" min="100" max="10000" step="100">
+            </div>
+          </div>
+          <div class="field">
+            <label for="state">
+              Icon state
+            </label>
+            <select id="state">
+              <option value="normal">
+                Normal
+              </option>
+              <option value="request">
+                Request sent / script finished
+              </option>
+              <option value="success">Finished (Update All)</option><option value="error">
+                Error
+              </option>
+            </select>
+          </div>
+          <div class="icon-editor">
+            <img id="iconPreview" class="preview" alt="Selected icon">
+            <div class="upload">
+              <label class="btn" for="iconFile">
+                Choose image
+              </label>
+              <input id="iconFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+              <select id="consoleChoice" aria-label="Console animation preset">
+                <option value="0">
+                  NES / Mario
+                </option>
+                <option value="1">
+                  SNES / Kirby
+                </option>
+                <option value="2">
+                  GENESIS / Sonic
+                </option>
+                <option value="3">
+                  TG16 / Bonk
+                </option>
+                <option value="4">
+                  PSX / Crash
+                </option>
+                <option value="5">
+                  SATURN / Bomberman
+                </option>
+                <option value="6">
+                  N64 / Yoshi
+                </option>
+                <option value="7">
+                  MEGA CD / Metal Sonic
+                </option>
+                <option value="8">
+                  GBA / Samus
+                </option>
+                <option value="9">
+                  GAME BOY / Kirby
+                </option>
+                <option value="10">
+                  MASTER / Alex Kidd
+                </option>
+                <option value="12">Simpsons · Bart</option><option value="13">Stay Puft · brightness</option><option value="11">
+                  NEO GEO / Terry
+                </option>
+              </select>
+              <button class="btn" id="consolePreset" style="font-size:14px;padding:7px 10px">
+                Apply console animation
+              </button>
+              <button class="btn" id="marioPreset" style="font-size:14px;padding:7px 10px">
+                Mario Bros. (NES)
+              </button>
+              <button class="btn" id="restoreIcon" style="font-size:14px;padding:7px 10px">
+                Use default
+              </button>
+              <p class="help">
+                PNG, JPG, WebP or animated GIF · cropped to square.
+                <br>
+                80 × 80 frames, oriented for Mini.
+                <br>
+                GIFs: up to 5 fps, 32 frames, 30-second loop.
+                <br>
+                1 MiB per animation; 4 MiB per page.
+              </p>
+            </div>
+          </div>
+          <label class="check">
+            <input id="addLabel" type="checkbox">
+            Add label to uploaded icon
+          </label>
+        </section>
+      </div>
+      <div class="status" role="status" aria-live="polite" id="status">
+        Ready. Edits are local; save your project to keep them.
+      </div>
+      <section class="instructions">
+        <h2>
+          From editor to MiSTer
+        </h2>
+        <ol>
+          <li>
+            Install the Mini launcher package, then export your layout here. Wait for Update All to finish and run Scripts/ButtonGoblin_Mini_Disable.sh before copying files.
+          </li>
+          <li>
+            Extract the export onto
+            <code>
+              /media/fat
+            </code>
+            , replacing the matching
+            <code>
+              all six buttons*.conf files
+            </code>
+            and icons.
+          </li>
+          <li>
+            Run
+            <code>
+              Scripts/ButtonGoblin_Mini_Enable.sh
+            </code>
+            . Use
+            <code>
+              ButtonGoblin_Mini_Enable.sh
+            </code>
+            if the launcher is stopped.
+          </li>
+        </ol>
+        <p class="help">
+          Paths are on your MiSTer, not this computer. Relative paths start at
+          <code>
+            /media/fat
+          </code>
+          . This editor prepares files; it does not execute scripts or connect to the deck.
+        </p>
+        <p class="help">
+          Scripts run through
+          <code>
+            /bin/sh
+          </code>
+          without arguments, one at a time, with a 60-second limit. Update All uses Bash with a one-hour limit and the installed updater; check its progress using the updater log over SSH. A busy script key shows its error icon. Use
+          <code>
+            .mgl
+          </code>
+          to launch a specific game.
+        </p>
+      </section>
+      <footer>
+        Button Goblin launcher v1.1.0 · Offline editing supported · Save a project before closing this page.
+      </footer>
+    </main>
+    <script src="mini-defaults.js"></script>
+    <script src="gif.js"></script>
+    <script src="mini-app.js"></script>
+  </body>
+</html>
