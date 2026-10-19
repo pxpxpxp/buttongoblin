@@ -126,10 +126,13 @@ jobs:
             bundle=$2
             title=$3
             notes=$4
+            latest=false
+            [ "$tag" != "$DUAL_TAG" ] || latest=true
             if gh release view "$tag" >/dev/null 2>&1; then
               gh release upload "$tag" "$bundle.zip" "$bundle.zip.sha256" --clobber
+              gh release edit "$tag" --title "$title" --notes-file "$notes" --latest="$latest"
             else
-              gh release create "$tag" "$bundle.zip" "$bundle.zip.sha256" --target "$GITHUB_SHA" --title "$title" --notes-file "$notes" --latest=false
+              gh release create "$tag" "$bundle.zip" "$bundle.zip.sha256" --target "$GITHUB_SHA" --title "$title" --notes-file "$notes" --latest="$latest"
             fi
           }
           publish "$MINI_TAG" "$MINI_BUNDLE" "Button Goblin Mini v$MINI_VERSION" mini/RELEASE_NOTES.md
