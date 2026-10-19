@@ -14,6 +14,8 @@ on:
       - 'tools/apply_shortcut_layout.py'
       - 'tools/animate_shortcuts.py'
       - 'tools/puft.b64'
+      - 'tools/publish_release.sh'
+      - 'tools/test_release_publish.py'
 permissions:
   contents: write
 concurrency:
@@ -116,24 +118,12 @@ jobs:
             ${{ env.DUAL_BUNDLE }}.zip
             ${{ env.DUAL_BUNDLE }}.zip.sha256
           if-no-files-found: error
+      - name: Test release publishing recovery
+        run: python3 tools/test_release_publish.py
       - name: Publish Mini and Dual releases
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -eu
-          publish() {
-            tag=$1
-            bundle=$2
-            title=$3
-            notes=$4
-            latest=false
-            [ "$tag" != "$DUAL_TAG" ] || latest=true
-            if gh release view "$tag" >/dev/null 2>&1; then
-              gh release upload "$tag" "$bundle.zip" "$bundle.zip.sha256" --clobber
-              gh release edit "$tag" --title "$title" --notes-file "$notes" --latest="$latest"
-            else
-              gh release create "$tag" "$bundle.zip" "$bundle.zip.sha256" --target "$GITHUB_SHA" --title "$title" --notes-file "$notes" --latest="$latest"
-            fi
-          }
-          publish "$MINI_TAG" "$MINI_BUNDLE" "Button Goblin Mini v$MINI_VERSION" mini/RELEASE_NOTES.md
-          publish "$DUAL_TAG" "$DUAL_BUNDLE" "Button Goblin Dual v$DUAL_VERSION" mini/DUAL_README.md
+          sh tools/publish_release.sh "$MINI_TAG" "$MINI_BUNDLE" "Button Goblin Mini v$MINI_VERSION" mini/RELEASE_NOTES.md
+          sh tools/publish_release.sh "$DUAL_TAG" "$DUAL_BUNDLE" "Button Goblin Dual v$DUAL_VERSION" mini/DUAL_README.md
