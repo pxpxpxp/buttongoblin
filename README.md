@@ -11,7 +11,7 @@ Turn an **Elgato Stream Deck MK.2** or **six-key Stream Deck Mini** into a dedic
 [![MK.2 build](https://github.com/pxpxpxp/MiSTer_StreamDeck/actions/workflows/release.yml/badge.svg)](https://github.com/pxpxpxp/MiSTer_StreamDeck/actions/workflows/release.yml)
 [![Mini and Dual build](https://github.com/pxpxpxp/MiSTer_StreamDeck/actions/workflows/mini-release.yml/badge.svg)](https://github.com/pxpxpxp/MiSTer_StreamDeck/actions/workflows/mini-release.yml)
 
-[15-key animated guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/) · [Mini animated guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/mini.html) · [MK.2 Deck Editor](https://pxpxpxp.github.io/MiSTer_StreamDeck/editor/) · [All releases](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases)
+[15-key animated guide](https://buttongoblin.monster/) · [Mini animated guide](https://buttongoblin.monster/mini.html) · [MK.2 Deck Editor](https://buttongoblin.monster/editor/) · [All releases](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases)
 
 ## Choose your setup
 
@@ -108,7 +108,7 @@ Release held buttons before using a new page. Update All feedback remains associ
 
 ## Make it yours
 
-**MK.2:** use the [Deck Editor](https://pxpxpxp.github.io/MiSTer_StreamDeck/editor/) on your computer. Assign actions, paths, and artwork; save an editable project; then export for MiSTer. Disable the MK.2 service before copying the export and enable it afterward. The standalone MK.2 ZIP also includes an offline editor.
+**MK.2:** use the [Deck Editor](https://buttongoblin.monster/editor/) on your computer. Assign actions, paths, and artwork; save an editable project; then export for MiSTer. Disable the MK.2 service before copying the export and enable it afterward. The standalone MK.2 ZIP also includes an offline editor.
 
 **Mini:** edit the six configuration files in `Scripts/.config/streamdeck-mini/`. Keep a Next or Back action available. The current web editor targets the 15-key MK.2; its exports do not fit the Mini.
 
@@ -162,4 +162,4 @@ Each release includes **LICENSE.txt** and **ARTWORK_CREDITS.txt** with the proje
 
 ---
 
-**[Download Dual](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/tag/dual-v1.0.3)** · **[Mini guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/mini.html)** · **[15-key guide](https://pxpxpxp.github.io/MiSTer_StreamDeck/)** · **[MK.2 editor](https://pxpxpxp.github.io/MiSTer_StreamDeck/editor/)**
+**[Download Dual](https://github.com/pxpxpxp/MiSTer_StreamDeck/releases/tag/dual-v1.0.3)** · **[Mini guide](https://buttongoblin.monster/mini.html)** · **[15-key guide](https://buttongoblin.monster/)** · **[MK.2 editor](https://buttongoblin.monster/editor/)**
