@@ -248,7 +248,7 @@ function exportFiles(){
  const view=project,page=activePage;const files=[];
  try{for(let i=0;i<2;i++){activePage=i;project=pageProjects[i];files.push(...exportPageFiles());}}finally{project=view;activePage=page;}
  const unique=new Map();for(const [name,data] of files){if(!unique.has(name))unique.set(name,data);}
- unique.set('READ_ME.txt',new TextEncoder().encode('Requires Button Goblin v1.1.1. Both page configurations and artwork are included. Extract into /media/fat, including hidden Scripts/.config, and run ButtonGoblin_Enable.sh after any updater finishes. Tap button 15 for brightness; hold one second for page two. Back returns to consoles. Keep your launcher binary; this export contains only configuration/artwork. Save project JSON to preserve both editable pages.\n'));
+ unique.set('READ_ME.txt',new TextEncoder().encode('Requires Button Goblin v2.0.0. Both page configurations and artwork are included. Extract into /media/fat, including hidden Scripts/.config, and run ButtonGoblin_Enable.sh after any updater finishes. Tap button 15 for brightness; hold one second for page two. Back returns to consoles. Keep your launcher binary; this export contains only configuration/artwork. Save project JSON to preserve both editable pages.\n'));
  return [...unique];
 }
 

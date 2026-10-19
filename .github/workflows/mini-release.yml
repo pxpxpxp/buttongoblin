@@ -12,6 +12,7 @@ on:
       - 'tools/build_mini_editor.py'
       - 'tools/test_mini_editor.js'
       - 'tools/test_mk2_editor.js'
+      - 'tools/test_animation_corruption.py'
       - 'mk2/**'
       - 'build-inputs/**'
       - 'tools/apply_shortcut_layout.py'
@@ -85,6 +86,8 @@ jobs:
           node --check docs/editor/app.js
           node --check docs/editor/mini-app.js
           node --check docs/editor/gif.js
+      - name: Stress native animation parsers with corrupted input
+        run: python3 tools/test_animation_corruption.py package/$MINI_BUNDLE/Scripts/.config/buttongoblin-mini/icons/asset_000.sma package/$DUAL_BUNDLE/Scripts/.config/buttongoblin/icons/custom/nes_mario.sda
       - name: Test both editor exports against the native launchers
         run: |
           set -eu

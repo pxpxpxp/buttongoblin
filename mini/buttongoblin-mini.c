@@ -22,7 +22,7 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
-#define VERSION "Button Goblin Mini 1.1.1"
+#define VERSION "Button Goblin Mini 2.0.0"
 #define KEYS 6
 #define PAGES 6
 #define NAV_PAGE 3

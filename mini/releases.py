@@ -2,8 +2,8 @@
 from pathlib import Path
 import argparse
 
-MINI_VERSION = '1.1.1'
-DUAL_VERSION = '1.1.1'
+MINI_VERSION = '2.0.0'
+DUAL_VERSION = '2.0.0'
 REPOSITORY = 'https://github.com/pxpxpxp/buttongoblin'
 
 def bundle(device, version):

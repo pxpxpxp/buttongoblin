@@ -1,4 +1,4 @@
-Button Goblin v1.1.1
+Button Goblin v2.0.0
 
 Animated MiSTer launchers for Elgato Stream Deck Mini and MK.2. Launch cores and favorites, navigate menus, control brightness, and run Update All. Use either device independently or both together.
 
@@ -10,5 +10,7 @@ Install: copy the complete Scripts contents, including hidden .config, into /med
 Packages include native ARM binaries, prepared artwork, configuration files, guides and source. Checks cover input, scripts, boot entries, page transitions, memory bounds, and independent simultaneous services.
 
 
-Review fixes in v1.1.1: duplicate shortcut buttons retain the shared virtual key until the last release; MK.2 tracks held inputs during startup; Mini editor releases discarded upload frames; repeated Mini packaging preserves service names. MK.2 editor now accepts its built-in PNG previews and exports both pages. Both editor exports are checked by native launchers in CI.
+Review fixes in v2.0.0: duplicate shortcut buttons retain the shared virtual key until the last release; MK.2 tracks held inputs during startup; Mini editor releases discarded upload frames; repeated Mini packaging preserves service names. MK.2 editor now accepts its built-in PNG previews and exports both pages. Both editor exports are checked by native launchers in CI.
 Mini console presets use explicit page/key positions, so every preset works regardless of its display label.
+
+Version 2.0.0 adds deterministic corruption tests for both native animation parsers under AddressSanitizer and UndefinedBehaviorSanitizer. Mini and Dual packages, native version output, guides and editor export instructions share the same release version.

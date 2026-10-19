@@ -1,20 +1,20 @@
-# Button Goblin · Stream Deck Mini · v1.1.1
+# Button Goblin · Stream Deck Mini · v2.0.0
 
 <img src="../docs/assets/button-goblin.webp" width="220" height="220" alt="Button Goblin">
 
-[Download Mini ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/mini-v1.1.1/ButtonGoblin_Mini_v1_1_1.zip) · [Animated Mini guide](https://buttongoblin.monster/mini.html) · [15-key MK.2 build](../README.md)
+[Download Mini ZIP](https://github.com/pxpxpxp/buttongoblin/releases/download/mini-v2.0.0/ButtonGoblin_Mini_v2_0_0.zip) · [Animated Mini guide](https://buttongoblin.monster/mini.html) · [15-key MK.2 build](../README.md)
 
 A six-key port of the existing native MiSTer launcher. **Update All is on the first page, physical key 4.** The Mini uses its own USB protocol and prepared 80×80 BMP animations. No image decoding happens on MiSTer.
 
-## Mini v1.1.1 · Y / N page
+## Mini v2.0.0 · Y / N page
 
 Page 6 adds animated Y and N keys, Back to Home, and Next. Letters turn green while held and release safely when leaving the page. Copy the new `buttons-confirm.conf` together with the updated binary and artwork. These keys target the active MiSTer screen; the background Update All process has separate non-interactive input.
 
 ## Run both decks together
 
-Use the **[Dual v1.1.1 bundle and setup instructions](DUAL_README.md)** to install the Mini and 15-key MK.2 together. Run `ButtonGoblin_Both_Enable.sh` after copying the complete bundle.
+Use the **[Dual v2.0.0 bundle and setup instructions](DUAL_README.md)** to install the Mini and 15-key MK.2 together. Run `ButtonGoblin_Both_Enable.sh` after copying the complete bundle.
 
-Mini v1.1.1 uses `buttongoblin-mini`, `ButtonGoblin_Mini_Enable.sh` and `/tmp/buttongoblin_mini.*`.
+Mini v2.0.0 uses `buttongoblin-mini`, `ButtonGoblin_Mini_Enable.sh` and `/tmp/buttongoblin_mini.*`.
 
 ## Home · Page 1
 
@@ -40,7 +40,7 @@ The navigation shortcuts have matching green artwork while held. Back retains th
 
 ## Install
 
-1. Download and extract **ButtonGoblin_Mini_v1_1_1.zip**.
+1. Download and extract **ButtonGoblin_Mini_v2_0_0.zip**.
 2. Copy the package’s complete **Scripts contents**, including hidden **.config**, into `/media/fat/Scripts/`.
 3. Connect your Elgato Stream Deck Mini to MiSTer’s USB host hub with a data-capable connection.
 4. Run **ButtonGoblin_Mini_Enable.sh** from MiSTer’s Scripts menu. The service starts immediately and at boot.
@@ -63,7 +63,7 @@ All six page configurations must load successfully. A failed reload keeps the co
 
 ## Build and verification
 
-GitHub Actions restores the existing v1 build inputs, generates the current character/control artwork, converts it to Mini format, runs the Mini tests, cross-compiles a static Cortex-A9 ARM binary with Zig 0.13.0, and publishes the ZIP and SHA-256 checksum under the **mini-v1.1.1** release.
+GitHub Actions restores the existing v1 build inputs, generates the current character/control artwork, converts it to Mini format, runs the Mini tests, cross-compiles a static Cortex-A9 ARM binary with Zig 0.13.0, and publishes the ZIP and SHA-256 checksum under the **mini-v2.0.0** release.
 
 The standalone native source is [buttongoblin-mini.c](buttongoblin-mini.c). `prepare_mini.py` prepares the package; `test_mini.c` and `test_package.py` check the protocol, paging, feedback, cache validation, and first-page updater mapping. The packaged source can be rebuilt with `sh source/build.sh` after installing Zig on a computer.
 
