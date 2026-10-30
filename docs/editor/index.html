@@ -266,37 +266,11 @@
       <div class="status" role="status" aria-live="polite" id="status">
         Ready. Edits are local; save your project to keep them.
       </div>
-      <section class="instructions">
+      <section class="instructions"><p><strong>New to Button Goblin?</strong> <a href="../index.html#install">Install the launcher first</a>, then use this editor on your computer to customize your MK.2. <a href="../index.html">Back to the guide →</a></p>
         <h2>
           From editor to MiSTer
         </h2>
-        <ol>
-          <li>
-            Install the updated MK.2 launcher package, then export your layout here.
-          </li>
-          <li>
-            Extract the export onto
-            <code>
-              /media/fat
-            </code>
-            , replacing the matching
-            <code>
-              buttons.conf and buttons-shortcuts.conf
-            </code>
-            and icons.
-          </li>
-          <li>
-            Run
-            <code>
-              Scripts/ButtonGoblin_Enable.sh
-            </code>
-            . Use
-            <code>
-              ButtonGoblin_Enable.sh
-            </code>
-            if the launcher is stopped.
-          </li>
-        </ol>
+        <ol><li>Choose your buttons, then <strong>Save project</strong> to keep an editable copy.</li><li>Select <strong>Export for MiSTer</strong> and extract the downloaded layout.</li><li>Wait for Update All to finish. Run <code>Scripts/ButtonGoblin_Disable.sh</code> on MiSTer.</li><li>Merge the export’s complete <code>Scripts</code> contents, including hidden <code>.config</code>, into <code>/media/fat/Scripts/</code>. Keep the installed launcher binary.</li><li>Run <code>Scripts/ButtonGoblin_Enable.sh</code> to apply your layout.</li></ol>
         <p class="help">
           Paths are on your MiSTer, not this computer. Relative paths start at
           <code>
